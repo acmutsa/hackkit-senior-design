@@ -4,10 +4,10 @@ import { z } from "zod";
 export const env = createEnv({
 	server: {
 		CLERK_SECRET_KEY: z.string().min(1),
-		DB_HOST: z.string().min(1),
-		DB_UNAME: z.string().min(1),
-		DB_PASS: z.string().min(1),
-		DB_URL: z.string().min(1),
+		POSTGRES_HOST: z.string().min(1),
+		POSTGRES_USER: z.string().min(1),
+		POSTGRES_PASSWORD: z.string().min(1),
+		POSTGRES_URL: z.string().min(1),
 	},
 	client: {
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
