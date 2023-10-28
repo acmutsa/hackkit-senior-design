@@ -4,8 +4,11 @@ import { RiTeamFill } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
 import { BsSearch } from "react-icons/bs";
 import { TbPlayerTrackNext } from "react-icons/tb";
+import JudgeTimer from "@/components/judging/JudgeTimer";
 
-export default async function Page() {
+const defaultTime: number = 300;
+
+export default async function JudgingPage() {
 
     const teamsLeft = 5;
     const currentTable = "143";
@@ -50,12 +53,7 @@ export default async function Page() {
 						<LuAlarmClock />
 					</CardHeader>
 					<CardContent className="flex flex-col items-center space-y-5">
-                        <div className="text-6xl"> 5:00 </div>
-                        <div className="w-33% space-x-2">
-                            <Button className="bg-lime-300">   Start </Button>
-                            <Button className="bg-red-400">    Stop  </Button>
-                            <Button className="bg-yellow-300"> Reset </Button>
-                        </div>
+                        <JudgeTimer defaultTime={defaultTime}/>
 					</CardContent>
 				</Card>
 			</div>
