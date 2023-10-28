@@ -38,6 +38,9 @@ export default {
 			Scanner: "/admin/scanner",
 			Events: "/admin/events",
 		},
+		judging: {
+			Overview: "/judging",
+		},
 	},
 	eventTypes: {
 		Meal: "#FFC107",
@@ -76,21 +79,27 @@ export default {
 			foreground: "#ffffff",
 			checked: false,
 		},
+		judge: {
+			title: "Judge",
+			color: "#D4AF37",
+			foreground: "#ffffff",
+			checked: false,
+		},
 		mlh: {
 			title: "MLH",
-			color: "#ffffff",
-			foreground: "#E73426",
-			checked: "#E73426",
+			color: "#E73426",
+			foreground: "#ffffff",
+			checked: false,
 		},
 		admin: {
 			title: "Organizer",
-			color: "#f59e0b",
+			color: "#F59E0B",
 			foreground: "#ffffff",
 			checked: true,
 		},
 		super_admin: {
 			title: "Organizer",
-			color: "#f59e0b",
+			color: "#F59E0B",
 			foreground: "#ffffff",
 			checked: true,
 		},
@@ -100,7 +109,7 @@ export default {
 
 // Its important that this is kept in sync with the database schema.
 
-export const perms = ["hacker", "volunteer", "mentor", "mlh", "admin", "super_admin"] as const;
+export const perms = ["hacker", "volunteer", "mentor", "judge", "mlh", "admin", "super_admin"] as const;
 
 export const schools = [
 	"The University of Texas at San Antonio",
