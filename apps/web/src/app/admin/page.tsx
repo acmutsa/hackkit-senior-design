@@ -5,7 +5,7 @@ import { users } from "@/db/schema";
 import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill } from "react-icons/bs";
 import { RiTeamFill } from "react-icons/ri";
 
-export default async function Page() {
+export default async function AdminPage() {
 	const totalUserCount = await db
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
