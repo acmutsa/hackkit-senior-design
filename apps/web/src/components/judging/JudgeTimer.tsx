@@ -3,7 +3,7 @@
 import { Button } from "../shadcn/ui/button";
 import { useEffect, useState } from "react"
 
-enum TimerMode { GO, RESET, PAUSE };
+enum TimerMode { START, RESET, PAUSE };
 
 function secondsToString (seconds: number) {
     return ((seconds >= 0) ? "" : "-") + Math.floor(Math.abs(seconds / 60)) + ":" + Math.abs(seconds % 60).toString().padStart(2, "0");
@@ -18,7 +18,7 @@ export default function JudgeTimer (props: {defaultTime: number}) {
     useEffect(() => {
 
         switch(timerMode){
-            case TimerMode.GO:
+            case TimerMode.START:
                 var newTimer = setInterval(() => {setTimeLeft((timeLeft) => timeLeft - 1);}, 1000);
                 setTimer(newTimer);
                 break;
@@ -45,8 +45,8 @@ export default function JudgeTimer (props: {defaultTime: number}) {
         <>
             <div className="text-6xl"> {secondsToString(timeLeft)} </div>
             <div className="w-33% space-x-2">
-                <Button onClick={() => {setTimerMode(TimerMode.GO)}}    className="bg-lime-300">   Start </Button>
-                <Button onClick={() => {setTimerMode(TimerMode.PAUSE)}} className="bg-red-400">    Stop  </Button>
+                <Button onClick={() => {setTimerMode(TimerMode.START)}} className="bg-lime-300">   Start </Button>
+                <Button onClick={() => {setTimerMode(TimerMode.PAUSE)}} className="bg-red-400">    Pause </Button>
                 <Button onClick={() => {setTimerMode(TimerMode.RESET)}} className="bg-yellow-300"> Reset </Button>
             </div>
         </>
