@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 enum TimerMode { GO, RESET, PAUSE };
 
 function secondsToString (seconds: number) {
-    return ((seconds > 0) ? "" : "-") + Math.floor(seconds / 60) + ":" + (seconds % 60).toString().padStart(2, "0");
+    return ((seconds >= 0) ? "" : "-") + Math.floor(Math.abs(seconds / 60)) + ":" + Math.abs(seconds % 60).toString().padStart(2, "0");
 }
 
 export default function JudgeTimer (props: {defaultTime: number}) {
@@ -38,7 +38,7 @@ export default function JudgeTimer (props: {defaultTime: number}) {
         return () => {
             clearInterval(timer);
         }
-        
+
     }, [timerMode]);
 
     return (
