@@ -17,10 +17,7 @@ export default function RoleBadge({ role }: RoleBadgeProps) {
 				<BsFillPatchCheckFill
 					className="text-lg"
 					style={{
-						color:
-							typeof c.roleBadges[role].checked == "boolean"
-								? `color-mix(in hsl longer hue, ${c.roleBadges[role].color} 95%, ${c.roleBadges[role].foreground})`
-								: (c.roleBadges[role].checked as string),
+						color: `color-mix(in hsl longer hue, ${c.roleBadges[role].color} 95%, ${c.roleBadges[role].foreground})`
 					}}
 				/>
 			) : null}
