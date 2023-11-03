@@ -11,31 +11,35 @@ function secondsToString (seconds: number) {
 
 export default function JudgeTimer (props: {defaultTime: number}) {
 
-    const [timeLeft, setTimeLeft] = useState(props.defaultTime);
-    const [timerMode, setTimerMode] = useState(TimerMode.PAUSE);
+    const [timeLeft,  setTimeLeft]  = useState<number>(props.defaultTime);
+    const [timer,     setTimer]     = useState<NodeJS.Timer>();
+    const [timerMode, setTimerMode] = useState<TimerMode>(TimerMode.PAUSE);
 
     useEffect(() => {
-        const updateTime = setInterval(() => {
-            switch(timerMode){
-                case TimerMode.GO:
-                    setTimeLeft(timeLeft - 1);
-                    break;
 
-                case TimerMode.RESET:
-                    setTimerMode(TimerMode.PAUSE);
-                    setTimeLeft(props.defaultTime);
-                    break;
+        switch(timerMode){
+            case TimerMode.GO:
+                var newTimer = setInterval(() => {setTimeLeft((timeLeft) => timeLeft - 1);}, 1000);
+                setTimer(newTimer);
+                break;
 
-                case TimerMode.PAUSE:
-                    setTimerMode(TimerMode.PAUSE);
-                    break;
-            }
-        }, 1000);
+            case TimerMode.RESET:
+                clearInterval(timer);
+                setTimerMode(TimerMode.PAUSE);
+                setTimeLeft(props.defaultTime);
+                break;
+
+            case TimerMode.PAUSE:
+                clearInterval(timer);
+                setTimerMode(TimerMode.PAUSE);
+                break;
+        }
 
         return () => {
-            clearInterval(updateTime);
+            clearInterval(timer);
         }
-    }, [timeLeft, timerMode]);
+        
+    }, [timerMode]);
 
     return (
         <>
