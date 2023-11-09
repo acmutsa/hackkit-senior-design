@@ -6,7 +6,10 @@ import { useEffect, useState } from "react"
 enum TimerMode { START, RESET, PAUSE };
 
 function secondsToString (seconds: number) {
-    return ((seconds >= 0) ? "" : "-") + Math.floor(Math.abs(seconds / 60)) + ":" + Math.abs(seconds % 60).toString().padStart(2, "0");
+    return ((seconds >= 0) ? "" : "-") +                                             // leading sign
+            Math.floor(Math.abs(seconds / 60)) + ":" +                               // minutes
+            Math.floor(Math.abs(seconds % 60)).toString().padStart(2, "0") +  "." +  // seconds
+            (Math.round(Math.abs(seconds * 10)) % 10).toString();                    // fractional seconds
 }
 
 export default function JudgeTimer (props: {defaultTime: number}) {
@@ -19,7 +22,7 @@ export default function JudgeTimer (props: {defaultTime: number}) {
 
         switch(timerMode){
             case TimerMode.START:
-                var newTimer = setInterval(() => {setTimeLeft((timeLeft) => timeLeft - 1);}, 1000);
+                var newTimer = setInterval(() => {setTimeLeft((timeLeft) => timeLeft - 0.1);}, 100);
                 setTimer(newTimer);
                 break;
 
