@@ -1,8 +1,6 @@
-import { Button } from "@/components/shadcn/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/shadcn/ui/card";
-import { RiTeamFill } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsJournal } from "react-icons/bs";
 import { TbPlayerTrackNext } from "react-icons/tb";
 import JudgeTimer from "@/components/judging/JudgeTimer";
 
@@ -20,7 +18,7 @@ export default async function JudgingPage() {
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Teams Left</CardTitle>
-						<RiTeamFill />
+						<BsJournal />
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">{teamsLeft}</div>

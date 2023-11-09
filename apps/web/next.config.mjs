@@ -10,6 +10,15 @@ const nextConfig = {
 			},
 		],
 	},
+    async redirects() {
+        return [
+            {
+                source: "/judging",
+                destination: "/judging/queue",
+                permanent: true
+            }
+        ]
+    }
 };
 
 export default nextConfig;

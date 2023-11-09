@@ -39,7 +39,8 @@ export default {
 			Events: "/admin/events",
 		},
 		judging: {
-			Overview: "/judging",
+			Queue: "/judging/queue",
+            Browse: "/judging/browse",
 		},
 	},
 	eventTypes: {
