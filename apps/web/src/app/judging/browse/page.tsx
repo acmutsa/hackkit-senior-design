@@ -30,36 +30,33 @@ export default async function Page() {
     }});
 
 	return (
-		<div className="w-full mx-auto h-16">
-		  <div className="grid gap-2 p-2" style={{gridTemplateColumns: "repeat(auto-fit, minmax(400px,1fr)"}}>
-              {
-                projects.map( (project) => { return (
-                  <Card key={project.id} className="hover:bg-zinc-900 transition-colors">
-                    <CardHeader className="flex flex-col items-center space-y-0 pb-4">
-                      <div className="text-sm font-medium">{project.track}</div>
-                      <div className="flex flex-row w-full justify-between">
-                        <div>{project.team}</div>
-                        <div>Table {project.table}</div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-row justify-between gap-x-2">
-                        <Link href={`submissions/${project.id}`}
-                              className="text-3xl align-middle w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                          {project.name}
-                        </Link>
-                        <a href={project.link} target="_blank">
-                          <Button className="text-xl p-2 text-center">
-                            Devpost
-                          </Button>
-                        </a>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )})
-              }
-		  </div>
-		</div>
+      <div className="w-full mx-auto h-16 grid gap-2 p-2" style={{gridTemplateColumns: "repeat(auto-fit, minmax(400px,1fr)"}}>
+        {
+          projects.map( (project) => { return (
+            <Card key={project.id} className="hover:bg-zinc-900 transition-colors">
+              <CardHeader className="flex flex-col items-center space-y-0 pb-4">
+                <div className="text-sm font-medium">{project.track}</div>
+                <div className="flex flex-row w-full justify-between">
+                  <div>{project.team}</div>
+                  <div>Table {project.table}</div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-row justify-between gap-x-2">
+                  <Link href={`submissions/${project.id}`} className="text-3xl align-middle w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                    {project.name}
+                  </Link>
+                  <a href={project.link} target="_blank">
+                    <Button className="text-xl p-2 text-center">
+                      Devpost
+                    </Button>
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          )})
+        }
+      </div>
 	);
 }
 
