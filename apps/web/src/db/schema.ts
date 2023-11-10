@@ -125,14 +125,24 @@ export const scans = pgTable("scans",
 
 export const teams = pgTable("teams",
 {
-	id:         varchar("id", { length: 50 }).notNull().primaryKey().unique(),
-	name:       varchar("name", { length: 255 }).notNull(),
-	tag:        varchar("tag", { length: 50 }).notNull().unique(),
-	bio:        text("bio"),
-	photo:      varchar("photo", { length: 400 }).notNull(),
-	createdAt:  timestamp("created_at").notNull().defaultNow(),
-	ownerID:    varchar("owner_id", { length: 255 }).notNull(),
-	devpostURL: varchar("devpost_url", { length: 255 }),
+	id:        varchar("id", { length: 50 }).notNull().primaryKey().unique(),
+	name:      varchar("name", { length: 255 }).notNull(),
+	tag:       varchar("tag", { length: 50 }).notNull().unique(),
+	bio:       text("bio"),
+	photo:     varchar("photo", { length: 400 }).notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	ownerID:   varchar("owner_id", { length: 255 }).notNull(),
+});
+
+export const submissions = pgTable("submissions",
+{
+    id:     varchar("id", {length: 50}).notNull().primaryKey().unique(),
+    teamID: varchar("team_id", {length: 50}).notNull(),
+    table:  integer("table"),
+    name:   varchar("name", {length: 255}).notNull(),
+    track:  varchar("track", {length: 50}).notNull(),
+    link:   varchar("link").notNull(),
+    time:   timestamp("time").notNull().defaultNow()
 });
 
 export const invites = pgTable("invites",
@@ -199,6 +209,13 @@ export const scansRelations = relations(scans, ({ one }) => ({
 export const teamsRelations = relations(teams, ({ one, many }) => ({
 	members: many(users),
 	invites: many(invites),
+}));
+
+export const submissionRelations = relations(submissions, ({ one }) => ({
+    team: one(teams, {
+        fields: [submissions.teamID],
+        references: [teams.id],
+    })
 }));
 
 export const invitesRelations = relations(invites, ({ one }) => ({
