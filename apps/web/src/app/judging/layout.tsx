@@ -10,16 +10,16 @@ import { users } from "@/db/schema";
 import FullScreenMessage from "@/components/shared/FullScreenMessage";
 import ProfileButton from "@/components/dash/shared/ProfileButton";
 
-interface AdminLayoutProps {
+interface JudgingLayoutProps {
 	children: React.ReactNode;
 }
 
-export default async function AdminLayout({ children }: AdminLayoutProps) {
+export default async function JudgingLayout({ children }: JudgingLayoutProps) {
 	const { userId } = auth();
 
 	if (!userId) {
 		return (
-			<FullScreenMessage message="No clue how this happened since you should have been redirected, but this page is only viewable by admins." />
+			<FullScreenMessage message="No clue how this happened since you should have been redirected, but this page is only viewable by judges." />
 		);
 	}
 
@@ -27,11 +27,11 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
+	if (!user || (user.role !== "judge") && (user.role !== "admin") && (user.role !== "super_admin")) {
 		return (
 			<FullScreenMessage
 				title="Access Denied"
-				message="You are not an admin. If you belive this is a mistake, please contact a administrator."
+				message="You are not a judge. If you belive this is a mistake, please contact an administrator."
 			/>
 		);
 	}
@@ -42,7 +42,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 				<div className="flex items-center gap-x-4">
 					<Image src={c.icon.svg} alt={c.hackathonName + " Logo"} width={32} height={32} />
 					<div className="bg-muted-foreground h-[45%] rotate-[25deg] w-[2px]" />
-					<h2 className="font-bold tracking-tight">Admin Dashboard</h2>
+					<h2 className="font-bold tracking-tight">Judging Dashboard</h2>
 				</div>
 				<div className="flex items-center justify-end gap-x-4">
 					<Link href={"/"}>
@@ -64,7 +64,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 				</div>
 			</div>
 			<div className="w-full h-12 px-5 flex bg-nav border-b-border border-b mb-12">
-				{Object.entries(c.dashPaths.admin).map(([name, path]) => (
+				{Object.entries(c.dashPaths.judging).map(([name, path]) => (
 					<DashNavItem key={name} name={name} path={path} />
 				))}
 			</div>
