@@ -32,11 +32,11 @@ export default async function Page({params: {id}}: {params: {id: string}}) {
     const criteria: string[] = ["Idea", "Technology", "Design", "Learning", "Completion"];
 
 	return (
-	  <Card className="w-full max-w-7xl mx-auto h-full text-center p-4">
-        <h1 className="text-4xl p-10">{project.name}</h1>
+	  <Card className="w-full h-full p-4 mx-auto text-center max-w-7xl">
+        <h1 className="p-10 text-4xl">{project.name}</h1>
         <div className="flex flex-col gap-x-2 gap-y-2">
           <Card className="p-8">
-            <div className="grid grid-rows-2 grid-cols-3 text-center">
+            <div className="grid grid-cols-3 grid-rows-2 text-center">
               <div className="text-lg"> Team  </div>
               <div className="text-lg"> Table </div>
               <div className="text-lg"> Track </div>

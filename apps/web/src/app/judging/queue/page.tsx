@@ -13,9 +13,9 @@ export default async function JudgingPage() {
     const nextTable = "157";
 
 	return (
-	  <div className="w-full max-w-7xl mx-auto h-16 grid grid-cols-3 gap-x-2 gap-y-2">
+	  <div className="grid w-full h-16 grid-cols-3 mx-auto max-w-7xl gap-x-2 gap-y-2">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Teams Left</CardTitle>
             <BsJournal />
           </CardHeader>
@@ -25,7 +25,7 @@ export default async function JudgingPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Current Table</CardTitle>
             <BsSearch />
           </CardHeader>
@@ -35,7 +35,7 @@ export default async function JudgingPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Next Table</CardTitle>
             <TbPlayerTrackNext />
           </CardHeader>
@@ -45,7 +45,7 @@ export default async function JudgingPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Timer</CardTitle>
             <LuAlarmClock />
           </CardHeader>

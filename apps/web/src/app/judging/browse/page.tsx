@@ -30,24 +30,24 @@ export default async function Page() {
     }});
 
 	return (
-      <div className="w-full mx-auto h-16 grid gap-4 p-2" style={{gridTemplateColumns: "repeat(auto-fit, minmax(400px,1fr)"}}>
+      <div className="grid w-full h-16 gap-4 p-2 mx-auto" style={{gridTemplateColumns: "repeat(auto-fit, minmax(400px,1fr)"}}>
         {
           projects.map( (project) => { return (
-            <Card key={project.id} className="hover:bg-zinc-900 transition-colors">
-              <CardHeader className="flex flex-col items-center space-y-0 pb-4">
+            <Card key={project.id} className="transition-colors hover:bg-zinc-900">
+              <CardHeader className="flex flex-col items-center pb-4 space-y-0">
                 <div className="text-lg font-medium">{project.track}</div>
-                <div className="flex flex-row w-full justify-between">
+                <div className="flex flex-row justify-between w-full">
                   <div>{project.team}</div>
                   <div>Table {project.table}</div>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-row justify-between gap-x-4">
-                  <Link href={`submissions/${project.id}`} className="text-3xl align-middle w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  <Link href={`submissions/${project.id}`} className="w-full overflow-hidden text-3xl align-middle text-ellipsis whitespace-nowrap">
                     {project.name}
                   </Link>
                   <a href={project.link} target="_blank">
-                    <Button className="text-xl p-2 text-center">
+                    <Button className="p-2 text-xl text-center">
                       Devpost
                     </Button>
                   </a>
