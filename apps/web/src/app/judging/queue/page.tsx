@@ -21,7 +21,6 @@ export default async function JudgingPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{teamsLeft}</div>
-            {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
           </CardContent>
         </Card>
         <Card>
@@ -31,7 +30,6 @@ export default async function JudgingPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{currentTable}</div>
-            {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
           </CardContent>
         </Card>
         <Card>
@@ -41,10 +39,9 @@ export default async function JudgingPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{nextTable}</div>
-            {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="w-[400px] lg:w-[420px]">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Timer</CardTitle>
             <LuAlarmClock />
