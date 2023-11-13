@@ -4,33 +4,33 @@ import JudgeSlider from "@/components/judging/JudgeSlider";
 import { Button } from "../shadcn/ui/button";
 import { FormEvent } from "react";
 
-export default function JudgeForm () {
-
-    const criteria: string[] = ["Idea", "Technology", "Design", "Learning", "Completion"];
+export default function JudgeForm (props: {id: string, criteria: string[]}) {
 
     function onSubmit (e: FormEvent) {
         e.preventDefault();
 
-        for(const criterion of criteria){
-            const slider = document.getElementById(criterion);
-            console.log("criterion " + slider + ": " + slider?.id);
+        const grades = [];
+
+        for(const criterion of props.criteria){
+            const slider = document.getElementById(criterion) as HTMLInputElement;
+            grades.push({criterion: slider?.id, grade: slider?.value});
         }
 
-        fetch("api/judging/submissions", {
+        fetch(`/api/judging/submissions/${props.id}`, {
             method: "POST",
-            body: JSON.stringify({
-
-            }),
+            body: JSON.stringify(grades),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        });
+        })
+        .then((res) => res.json())
+        .then((body) => console.log(body));
     }
 
     return (
       <form id="judgeForm" onSubmit={onSubmit}>
         {
-          criteria.map( (criterion) => { return (
+          props.criteria.map( (criterion) => { return (
             <JudgeSlider key={criterion} criterion={criterion}/>
           )})
         }

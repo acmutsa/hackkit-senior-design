@@ -19,6 +19,8 @@ export default async function Page({params: {id}}: {params: {id: string}}) {
         submissionTime: submission[0].time.toDateString(),
     };
     
+    const tempCriteria: string[] = ["Idea", "Technology", "Design", "Learning", "Completion"];
+
 	return (
 	  <Card className="w-full h-full p-4 mx-auto text-center max-w-7xl">
         <h1 className="pt-2 pb-6 text-4xl font-medium">{project.name}</h1>
@@ -33,7 +35,7 @@ export default async function Page({params: {id}}: {params: {id: string}}) {
               <div className="text-3xl"> {project.track} </div>
             </div>
           </Card>
-          <JudgeForm />
+          <JudgeForm id={project.id} criteria={tempCriteria}/>
         </div>
 	  </Card>
 	);
