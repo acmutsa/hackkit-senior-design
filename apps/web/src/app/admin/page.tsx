@@ -128,7 +128,7 @@ export default async function Page() {
 				{/* TBD table | Teams/Projects Submissions % Completion % Finished % */}
 				<Table>
 					<TableHeader>
-						<TableRow>
+					    <TableRow>
 						<TableHead className="w-[100px]">Team</TableHead>
 						<TableHead>Project</TableHead>
 						<TableHead>Track</TableHead>
