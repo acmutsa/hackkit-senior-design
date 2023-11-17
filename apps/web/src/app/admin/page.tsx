@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/shadcn/ui/card";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader,TableRow } from "@/components/shadcn/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/shadcn/ui/table";
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
 import { users, teams, submissions } from "@/db/schema";
@@ -50,6 +50,9 @@ export default async function Page() {
 	})
 
 	const submissionPerc = (submitted * 100) / projects.length;
+	// test // const submissionPerc = 75;
+	const completionPerc = 57;
+	const finishedPerc = 25;
 
 	return (
 		<div className="w-full max-w-7xl mx-auto h-16">
@@ -102,7 +105,13 @@ export default async function Page() {
 						<BsClipboardCheck />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold">{submissionPerc}%</div>
+						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
+							<div className="text-2xl font-bold">{submissionPerc}%</div>
+							<div className="text-xl">{submitted}/{projects.length}</div>
+						</CardContent>
+						<div className="h-2 w-full bg-slate-500 rounded-2xl">
+							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${submissionPerc}%`}}></div>
+						</div>
 					</CardContent>
 				</Card>
 				<Card>
@@ -111,7 +120,13 @@ export default async function Page() {
 						<BsCheck2Circle />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold">TBD%</div>
+						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
+							<div className="text-2xl font-bold">{completionPerc}%</div>
+							<div className="text-xl">TBD</div>
+						</CardContent>
+						<div className="h-2 w-full bg-slate-500 rounded-2xl">
+							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${completionPerc}%`}}></div>
+						</div>
 					</CardContent>
 				</Card>
 				<Card>
@@ -120,7 +135,13 @@ export default async function Page() {
 						<BsCheckCircleFill />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold">TBD%</div>
+						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
+							<div className="text-2xl font-bold">{finishedPerc}%</div>
+							<div className="text-xl">TBD</div>
+						</CardContent>
+						<div className="h-2 w-full bg-slate-500 rounded-2xl">
+							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${finishedPerc}%`}}></div>
+						</div>
 					</CardContent>
 				</Card>
 			</div>
