@@ -3,20 +3,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
 import { users, teams, submissions } from "@/db/schema";
-import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsClipboardCheck, BsCheck2Circle, BsCheckCircleFill } from "react-icons/bs";
-import { RiTeamFill } from "react-icons/ri";
+import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
+import { RiTeamFill, RiContactsFill, RiEditBoxFill } from "react-icons/ri";
 
 export default async function Page() {
 
 	interface Project {
 		id:             string,
 		team:           string,
-		table:          number,
 		name:           string,
 		track:          string,
-		link:           string,
+		table:          number,
 		submissionTime: string,
-	}
+	};
 
 	const allSubmissions = await db
 		.select()
@@ -26,33 +25,41 @@ export default async function Page() {
 		.select()
 		.from(teams);
 
-	const projects: Project[] = allSubmissions.map( (submission) => { return {
-		id:             submission.id,
-		team:           allTeams.find((team) => team.id == submission.teamID)?.name || "",
-		table:          submission.table || 0,
-		name:           submission.name,
-		track:          submission.track,
-		link:           submission.link,
-		submissionTime: submission.time.toDateString(),
-	}});
-
-	const totalUserCount = await db
+    const totalUserCount = await db
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
 	const totalTeamCount = allTeams.length;
-	const totalRSVPCount = 0;
-	const totalCheckinCount = 0;
+	const totalRSVPCount = 0;    // TODO
+	const totalCheckinCount = 0; // TODO
+
+	/* NOTES
+	 * - Are teams assigned a table on creation?
+	 * - Move table attribute from submissions to team?
+	 * - Do teams chose which track to submit to before OR after submitting?
+	 */
+	const projects: Project[] = allTeams.map( (team) => { return {
+		id:             team.id,
+		team:           team.name,
+		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "N/A",
+		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "N/A",
+		table:          allSubmissions.find((submission) => submission.teamID === team.id)?.table || 0,
+		submissionTime: allSubmissions.find((submission) => submission.teamID === team.id)?.time.toDateString() || "",
+	}});
 
 	var submitted: number = 0;
-	allSubmissions.map((sub) => {
-		if (sub.time.toDateString() !== "") { submitted++ }
-	})
-
+	projects.map((proj) => {
+		if (proj.submissionTime !== "") { submitted++; }
+	});
 	const submissionPerc = (submitted * 100) / projects.length;
-	// test // const submissionPerc = 75;
-	const completionPerc = 57;
-	const finishedPerc = 25;
+
+    /* NOTES
+     * - Completion = % of interviews conducted out of total interviews.
+     * - Finished = % of projects fully judged out of total judging.
+     * - How are both of these going to be tracked?
+     */
+	const completionPerc = 57; // TODO
+	const finishedPerc = 25;   // TODO
 
 	return (
 		<div className="w-full max-w-7xl mx-auto h-16">
@@ -102,12 +109,13 @@ export default async function Page() {
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Submissions</CardTitle>
-						<BsClipboardCheck />
+						<BsCheckCircleFill />
 					</CardHeader>
 					<CardContent>
+                        {/* Percentage of projects SUBMITTED out off all projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{submissionPerc}%</div>
-							<div className="text-xl">{submitted}/{projects.length}</div>
+							<div className="text-l font-bold">{submitted}/{projects.length}</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${submissionPerc}%`}}></div>
@@ -117,12 +125,13 @@ export default async function Page() {
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Completion</CardTitle>
-						<BsCheck2Circle />
+						<RiContactsFill />
 					</CardHeader>
 					<CardContent>
+						{/* Percentage of INTERVIEWS done out off all interviews */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{completionPerc}%</div>
-							<div className="text-xl">TBD</div>
+							<div className="text-l font-bold">TBD</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${completionPerc}%`}}></div>
@@ -132,12 +141,13 @@ export default async function Page() {
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Finished</CardTitle>
-						<BsCheckCircleFill />
+						<RiEditBoxFill />
 					</CardHeader>
 					<CardContent>
+						{/* Percentage of FULLY JUDGED projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{finishedPerc}%</div>
-							<div className="text-xl">TBD</div>
+							<div className="text-l font-bold">TBD</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${finishedPerc}%`}}></div>
@@ -146,7 +156,6 @@ export default async function Page() {
 				</Card>
 			</div>
 			<div className="mt-2">
-				{/* TBD table | Teams/Projects Submissions % Completion % Finished % */}
 				<Table>
 					<TableHeader>
 					    <TableRow>
@@ -165,7 +174,7 @@ export default async function Page() {
 								<TableCell className="font-medium">{project.name}</TableCell>
 								<TableCell className="font-medium">{project.track}</TableCell>
 								<TableCell className="font-medium text-center">{project.table}</TableCell>
-								<TableCell className="text-center">{project.submissionTime === "" ? `\u2715` : project.submissionTime}</TableCell>
+								<TableCell className="text-center">{project.submissionTime === "" ? `\u2715` : `\u2713 ` + project.submissionTime}</TableCell>
 								{/* TBD if judged, display check, else display x */}
 								<TableCell className="text-center">&#x2715;</TableCell>
 							</TableRow>
