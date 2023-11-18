@@ -41,9 +41,9 @@ export default async function Page() {
 	const projects: Project[] = allTeams.map( (team) => { return {
 		id:             team.id,
 		team:           team.name,
-		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "N/A",
-		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "N/A",
-		table:          allSubmissions.find((submission) => submission.teamID === team.id)?.table || 0,
+		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "---",
+		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "---",
+		table:          allSubmissions.find((submission) => submission.teamID === team.id)?.table || -1,
 		submissionTime: allSubmissions.find((submission) => submission.teamID === team.id)?.time.toDateString() || "",
 	}});
 
@@ -173,10 +173,10 @@ export default async function Page() {
 								<TableCell className="font-medium">{project.team}</TableCell>
 								<TableCell className="font-medium">{project.name}</TableCell>
 								<TableCell className="font-medium">{project.track}</TableCell>
-								<TableCell className="font-medium text-center">{project.table}</TableCell>
-								<TableCell className="text-center">{project.submissionTime === "" ? `\u2715` : `\u2713 ` + project.submissionTime}</TableCell>
+								<TableCell className="font-medium text-center">{project.table === -1 ? "---" : project.table}</TableCell>
+								<TableCell className="font-medium text-center">{project.submissionTime === "" ? `\u2715` : `\u2713 ` + project.submissionTime}</TableCell>
 								{/* TBD if judged, display check, else display x */}
-								<TableCell className="text-center">&#x2715;</TableCell>
+								<TableCell className="font-medium text-center">&#x2715;</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
