@@ -15,6 +15,7 @@ import { Value } from "@radix-ui/react-select";
 
 export default async function Page() {
     const { userId } = auth();
+
     if (!userId) return null;
 
     // TODO: make this db query not so bad
@@ -247,32 +248,37 @@ export default async function Page() {
                         </div>
                         {submission && (
                             <div className="flex justify-center mt-4">
-                                <div className="border border-muted p-4 bg-gray-100 rounded-lg shadow-md">
+                                <div className="border border-gray-700 p-4 bg-gray-800 rounded-lg shadow-md">
                                     <div>
-                                        <h3 className="text-2xl font-bold mb-2 text-black">
+                                        <h3 className="text-2xl font-bold mb-2 text-white">
                                             Last Submission
                                         </h3>
-                                        <div className="bg-white p-4 rounded-md shadow-md">
-                                            <p className="mb-2 font-semibold text-gray-800">
-                                                <span className="font-semibold text-gray-800">
+                                        <div className="bg-gray-700 p-4 rounded-md shadow-md">
+                                            <p className="mb-2 font-semibold text-gray-300">
+                                                <span className="font-semibold text-gray-300">
                                                     Table:
                                                 </span>{" "}
                                                 {submission.table}
                                             </p>
-                                            <p className="mb-2 font-semibold text-gray-800">
-                                                <span className="font-semibold text-gray-800">
+                                            <p className="mb-2 font-semibold text-gray-300">
+                                                <span className="font-semibold text-gray-300">
                                                     Track:
                                                 </span>{" "}
                                                 {submission.track}
                                             </p>
-                                            <p className="mb-2 font-semibold text-gray-800">
-                                                <span className="font-semibold text-gray-800">
+                                            <p className="mb-2 font-semibold text-gray-300">
+                                                <span className="font-semibold text-gray-300">
                                                     Link:
                                                 </span>{" "}
-                                                {submission.link}
+                                                <a
+                                                    href={submission.link}
+                                                    className="text-blue-500 hover:underline"
+                                                >
+                                                    {submission.link}
+                                                </a>
                                             </p>
-                                            <p className="mb-2 font-semibold text-gray-800">
-                                                <span className="font-semibold text-gray-800">
+                                            <p className="mb-2 font-semibold text-gray-300">
+                                                <span className="font-semibold text-gray-300">
                                                     Time:
                                                 </span>{" "}
                                                 {submission.time.toString()}
