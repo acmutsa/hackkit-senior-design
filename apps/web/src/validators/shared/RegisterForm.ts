@@ -77,13 +77,13 @@ export const RegisterFormValidator = z.object({
 	]),
 	hackathonsAttended: z
 		.number()
-		.positive({ message: "Value must be positive" })
+		.nonnegative({ message: "Value must be non-negative" })
 		.int({ message: "Value must be an integer" })
 		.or(z.string())
 		.pipe(
 			z.coerce
 				.number()
-				.positive({ message: "Value must be positive" })
+				.nonnegative({ message: "Value must be non-negative" })
 				.int({ message: "Value must be an integer" })
 		),
 	softwareBuildingExperience: z.union([
