@@ -45,7 +45,7 @@ export const RegisterFormValidator = z.object({
 		z.literal("Native American", defaultPrettyError),
 		z.literal("Asian / Pacific Islander", defaultPrettyError),
 		z.literal("Black or African American", defaultPrettyError),
-		z.literal("White / Caucasion", defaultPrettyError),
+		z.literal("White / Caucasian", defaultPrettyError),
 		z.literal("Multiple / Other", defaultPrettyError),
 		z.literal("Prefer not to say", defaultPrettyError),
 	]),
@@ -77,13 +77,13 @@ export const RegisterFormValidator = z.object({
 	]),
 	hackathonsAttended: z
 		.number()
-		.positive({ message: "Value must be positive" })
+		.nonnegative({ message: "Value must be non-negative" })
 		.int({ message: "Value must be an integer" })
 		.or(z.string())
 		.pipe(
 			z.coerce
 				.number()
-				.positive({ message: "Value must be positive" })
+				.nonnegative({ message: "Value must be non-negative" })
 				.int({ message: "Value must be an integer" })
 		),
 	softwareBuildingExperience: z.union([
