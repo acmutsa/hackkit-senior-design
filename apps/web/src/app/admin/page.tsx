@@ -31,6 +31,9 @@ export default async function Page() {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
+	/* NOTES
+	 * Variables from original file.
+	 */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
 	const totalCheckinCount = 0; // TODO
@@ -131,7 +134,7 @@ export default async function Page() {
 					<CardContent>
                         {/* Percentage of projects SUBMITTED out off all projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
-							<div className="text-2xl font-bold">{submissionPerc}%</div>
+							<div className="text-2xl font-bold">{submissionPerc.toFixed(1)}%</div>
 							<div className="text-l font-bold">{submitted}/{projects.length}</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
@@ -171,6 +174,17 @@ export default async function Page() {
 						</div>
 					</CardContent>
 				</Card>
+			</div>
+			<div className="w-full grid grid-cols-2 my-5">
+				<div className="flex items-center">
+					<div>
+						<h3 className="text-2xl font-bold tracking-tight">Submissions</h3>
+					</div>
+				</div>
+				<div className="flex items-center justify-end gap-2"> {/* Alert for each corresponding button? */}
+					<Button variant="outline" className="flex">Open</Button>
+					<Button variant="outline" className="flex">Close</Button>
+				</div>
 			</div>
 			<div className="mt-2">
 				<Table>
