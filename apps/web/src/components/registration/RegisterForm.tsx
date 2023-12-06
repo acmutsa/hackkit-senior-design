@@ -274,7 +274,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 													<SelectItem value="Black or African American">
 														Black or African American
 													</SelectItem>
-													<SelectItem value="White / Caucasion">White / Caucasion</SelectItem>
+													<SelectItem value="White / Caucasian">White / Caucasion</SelectItem>
 													<SelectItem value="Multiple / Other">Multiple / Other</SelectItem>
 													<SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
 												</SelectGroup>
