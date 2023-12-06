@@ -7,6 +7,7 @@ import { users, teams, submissions } from "@/db/schema";
 import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
 import { RiTeamFill, RiContactsFill, RiEditBoxFill } from "react-icons/ri";
 import { BiSolidFileExport } from "react-icons/bi";
+import Link from "next/link";
 
 export default async function Page() {
 
@@ -182,8 +183,8 @@ export default async function Page() {
 					</div>
 				</div>
 				<div className="flex items-center justify-end gap-2"> {/* Alert for each corresponding button? */}
-					<Button variant="outline" className="flex">Open</Button>
-					<Button variant="outline" className="flex">Close</Button>
+					<Button variant="outline" className="flex hover:bg-slate-800">Open</Button>
+					<Button variant="outline" className="flex hover:bg-red-800">Close</Button>
 				</div>
 			</div>
 			<div className="mt-2">
@@ -200,7 +201,7 @@ export default async function Page() {
 					</TableHeader>
 					<TableBody>
 						{projects.map((project) => (
-							<TableRow key={project.id}>
+							<TableRow key={project.id} className="cursor-pointer">
 								<TableCell className="font-medium">{project.team}</TableCell>
 								<TableCell className="font-medium">{project.name}</TableCell>
 								<TableCell className="font-medium">{project.track}</TableCell>
