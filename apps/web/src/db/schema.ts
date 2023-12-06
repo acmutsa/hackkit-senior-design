@@ -137,7 +137,7 @@ export const teams = pgTable("teams",
 export const submissions = pgTable("submissions",
 {
     id:     varchar("id", {length: 50}).notNull().primaryKey().unique(),
-    teamID: varchar("team_id", {length: 50}).notNull(),
+    teamID: varchar("team_id", {length: 50}).notNull().unique(),
     table:  integer("table"),
     name:   varchar("name", {length: 255}).notNull(),
     track:  varchar("track", {length: 50}).notNull(),
