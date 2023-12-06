@@ -7,6 +7,7 @@ import { users, teams, submissions } from "@/db/schema";
 import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
 import { RiTeamFill, RiContactsFill, RiEditBoxFill } from "react-icons/ri";
 import { BiSolidFileExport } from "react-icons/bi";
+import Link from "next/link";
 
 export default async function Page() {
 
@@ -136,7 +137,7 @@ export default async function Page() {
 					<CardContent>
                         {/* Percentage of projects SUBMITTED out off all projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
-							<div className="text-2xl font-bold">{submissionPerc.toFixed(1)}%</div>
+							<div className="text-2xl font-bold">{submissionPerc.toFixed(0)}%</div>
 							<div className="text-l font-bold">{submitted}/{projects.length}</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
@@ -152,7 +153,7 @@ export default async function Page() {
 					<CardContent>
 						{/* Percentage of INTERVIEWS done out off all interviews */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
-							<div className="text-2xl font-bold">{completionPerc}%</div>
+							<div className="text-2xl font-bold">{completionPerc.toFixed(0)}%</div>
 							<div className="text-l font-bold">TBD</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
@@ -168,7 +169,7 @@ export default async function Page() {
 					<CardContent>
 						{/* Percentage of FULLY JUDGED projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
-							<div className="text-2xl font-bold">{finishedPerc}%</div>
+							<div className="text-2xl font-bold">{finishedPerc.toFixed(0)}%</div>
 							<div className="text-l font-bold">TBD</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
@@ -192,6 +193,7 @@ export default async function Page() {
 				<Table>
 					<TableHeader>
 					    <TableRow>
+							<TableHead className="w-[75px] text-center">Page</TableHead>
 							<TableHead className="w-[100px]">Team</TableHead>
 							<TableHead>Project</TableHead>
 							<TableHead>Track</TableHead>
@@ -202,7 +204,12 @@ export default async function Page() {
 					</TableHeader>
 					<TableBody>
 						{projects.map((project) => (
-							<TableRow key={project.id} className="cursor-pointer">
+							<TableRow key={project.id}>
+								<TableCell className="font-medium">
+									<Link href={`/~${project.tag}`}> {/* Currently links to team's page */}
+										<Button variant="secondary" className="hover:bg-gray-800">View</Button>
+									</Link>
+								</TableCell>
 								<TableCell className="font-medium">{project.team}</TableCell>
 								<TableCell className="font-medium">{project.name}</TableCell>
 								<TableCell className="font-medium">{project.track}</TableCell>
