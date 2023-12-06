@@ -8,13 +8,13 @@ const defaultPrettyError = {
 export const RegisterFormValidator = z.object({
 	firstName: z
 		.string()
-		.min(1, { message: "Firstname must be at least one character" })
-		.max(50, { message: "Firstname must be less than 50 characters" }),
+		.min(1, { message: "First name must be at least one character" })
+		.max(50, { message: "First name must be less than 50 characters" }),
 	lastName: z
 
 		.string()
-		.min(1, { message: "Lastname must be at least 1 character" })
-		.max(50, { message: "Lastname must be less than 50 characters" }),
+		.min(1, { message: "Last name must be at least 1 character" })
+		.max(50, { message: "Last name must be less than 50 characters" }),
 	email: z
 		.string()
 		.email({
@@ -45,7 +45,7 @@ export const RegisterFormValidator = z.object({
 		z.literal("Native American", defaultPrettyError),
 		z.literal("Asian / Pacific Islander", defaultPrettyError),
 		z.literal("Black or African American", defaultPrettyError),
-		z.literal("White / Caucasion", defaultPrettyError),
+		z.literal("White / Caucasian", defaultPrettyError),
 		z.literal("Multiple / Other", defaultPrettyError),
 		z.literal("Prefer not to say", defaultPrettyError),
 	]),
@@ -74,6 +74,8 @@ export const RegisterFormValidator = z.object({
 		z.literal("Sophomore", defaultPrettyError),
 		z.literal("Junior", defaultPrettyError),
 		z.literal("Senior", defaultPrettyError),
+		z.literal("Recent Grad", defaultPrettyError),
+		z.literal("Other", defaultPrettyError)
 	]),
 	hackathonsAttended: z
 		.number()
