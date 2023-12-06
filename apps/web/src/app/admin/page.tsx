@@ -7,12 +7,12 @@ import { users, teams, submissions } from "@/db/schema";
 import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
 import { RiTeamFill, RiContactsFill, RiEditBoxFill } from "react-icons/ri";
 import { BiSolidFileExport } from "react-icons/bi";
-import Link from "next/link";
 
 export default async function Page() {
 
 	interface Project {
 		id:             string,
+		tag:            string,
 		team:           string,
 		name:           string,
 		track:          string,
@@ -46,6 +46,7 @@ export default async function Page() {
 	 */
 	const projects: Project[] = allTeams.map( (team) => { return {
 		id:             team.id,
+		tag:            team.tag,
 		team:           team.name,
 		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "---",
 		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "---",
@@ -191,12 +192,12 @@ export default async function Page() {
 				<Table>
 					<TableHeader>
 					    <TableRow>
-						<TableHead className="w-[100px]">Team</TableHead>
-						<TableHead>Project</TableHead>
-						<TableHead>Track</TableHead>
-						<TableHead className="text-center">Table</TableHead>
-						<TableHead className="text-center">Submitted</TableHead>
-						<TableHead className="text-center">Judged</TableHead>
+							<TableHead className="w-[100px]">Team</TableHead>
+							<TableHead>Project</TableHead>
+							<TableHead>Track</TableHead>
+							<TableHead className="text-center">Table</TableHead>
+							<TableHead className="text-center">Submitted</TableHead>
+							<TableHead className="text-center">Judged</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
