@@ -2,8 +2,8 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/shadcn/ui
 import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/shadcn/ui/table";
 import { Button } from "@/components/shadcn/ui/button";
 import { db } from "@/db";
-import { sql } from "drizzle-orm";
-import { users, teams, submissions } from "@/db/schema";
+import { sql, eq } from "drizzle-orm";
+import { users, teams, submissions, interviews, tracks, trackSubmissions } from "@/db/schema";
 import { BsFillPersonLinesFill, BsPersonBoundingBox, BsFillPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
 import { RiTeamFill, RiContactsFill, RiEditBoxFill } from "react-icons/ri";
 import { BiSolidFileExport } from "react-icons/bi";
@@ -11,9 +11,9 @@ import Link from "next/link";
 
 export default async function Page() {
 
-	interface Project {            /* TODO: Change track and table to pull from tracks/interview tables */
-		id:             string,
-		tag:            string,
+	interface Project {            /* TODO: Dummy interviews -> Completion & Finished % */
+		id:             string,    /* Judged column to display (complete interviews) / (total interviews) */
+		tag:            string,    /* Display check + timestamp(?) when complete */
 		team:           string,
 		name:           string,
 		link:           string,
@@ -22,37 +22,47 @@ export default async function Page() {
 		submissionTime: string,
 	};
 
-	const allSubmissions = await db
+	const totalUserCount = await db
+		.select({ count: sql<number>`count(*)`.mapWith(Number) })
+		.from(users);
+
+	const allTracks = await db
 		.select()
-		.from(submissions);
+		.from(tracks);
 
 	const allTeams = await db
 		.select()
 		.from(teams);
 
-    const totalUserCount = await db
-		.select({ count: sql<number>`count(*)`.mapWith(Number) })
-		.from(users);
+	const allInterviews = await db
+		.select()
+		.from(interviews);
+
+	const teamSub = await db
+		.select()
+		.from(teams)
+		.fullJoin(submissions, eq(teams.id, submissions.teamID));
+
+	const getTrack = await db
+		.select()
+		.from(tracks)
+		.leftJoin(trackSubmissions, eq(tracks.id, trackSubmissions.trackID));
 
 	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
 	const totalCheckinCount = 0; // TODO
 
-	/* NOTES
-	 * - Are teams assigned a table on creation?
-	 * - Move table attribute from submissions to team?
-	 * - Do teams chose which track to submit to before OR after submitting?
-	 */
-	const projects: Project[] = allTeams.map( (team) => { return {
-		id:             team.id,
-		tag:            team.tag,
-		team:           team.name,
-		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "---",
-		link:           allSubmissions.find((submission) => submission.teamID === team.id)?.link || "",
-		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "---",
-		table:          allSubmissions.find((submission) => submission.teamID === team.id)?.table || -1,
-		submissionTime: allSubmissions.find((submission) => submission.teamID === team.id)?.time.toDateString() || "",
+	/* Project Interface */
+	const projects: Project[] = teamSub.map( (teamSub) => { return {
+		id:             teamSub.teams!.id,
+		tag:            teamSub.teams!.tag,
+		team:           teamSub.teams!.name,
+		name:           teamSub.submissions?.name ?? "---",
+		link:           teamSub.submissions?.link ?? "",
+		track:          getTrack.find((track) => track.track_submissions?.submissionID === teamSub.submissions?.id)?.tracks.name ?? "---",
+		table:          allInterviews.find((interview) => interview.submissionID === teamSub.submissions?.id)?.table ?? -1,
+		submissionTime: teamSub.submissions?.time.toDateString() || "",
 	}});
 
 	/* Calculating the percentage of submitted projects */
