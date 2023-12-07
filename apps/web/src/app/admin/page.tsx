@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default async function Page() {
 
-	interface Project {
+	interface Project {            /* TODO: Change track and table to pull from tracks/interview tables */
 		id:             string,
 		tag:            string,
 		team:           string,
@@ -33,9 +33,7 @@ export default async function Page() {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
-	/* NOTES
-	 * Variables from original file.
-	 */
+	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
 	const totalCheckinCount = 0; // TODO
@@ -55,18 +53,18 @@ export default async function Page() {
 		submissionTime: allSubmissions.find((submission) => submission.teamID === team.id)?.time.toDateString() || "",
 	}});
 
+	/* Calculating the percentage of submitted projects */
 	var submitted: number = 0;
 	projects.map((proj) => {
 		if (proj.submissionTime !== "") { submitted++; }
 	});
 	const submissionPerc = (submitted * 100) / projects.length;
 
-    /* NOTES
-     * - Completion = % of interviews conducted out of total interviews.
-     * - Finished = % of projects fully judged out of total judging.
-     * - How are both of these going to be tracked?
-     */
-	const completionPerc = 57; // TODO
+    /* TESTING - Calculating the percentage of judging completed */
+	const numInterviews = allTeams.length * 6; // Total interviews, assuming 6 per submission.
+	const comInterviews = numInterviews / 3;   // Assuming 1/3 of interviews have been completed.
+
+	const completionPerc = (comInterviews * 100) / numInterviews; // TODO
 	const finishedPerc = 25;   // TODO
 
 	return (
@@ -78,7 +76,7 @@ export default async function Page() {
 					</div>
 				</div>
 				<div className="flex items-center justify-end">
-					<a download> {/* href="/api/admin/export/overview" */}
+					<a download> {/* TODO */}
 						<Button className="flex gap-x-1">
 							<BiSolidFileExport />
 							Export
@@ -154,7 +152,7 @@ export default async function Page() {
 						{/* Percentage of INTERVIEWS done out off all interviews */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{completionPerc.toFixed(0)}%</div>
-							<div className="text-l font-bold">TBD</div>
+							<div className="text-l font-bold">{comInterviews}/{numInterviews}</div> {/* TODO: Change variables to final */}
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${completionPerc}%`}}></div>
@@ -169,7 +167,7 @@ export default async function Page() {
 					<CardContent>
 						{/* Percentage of FULLY JUDGED projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
-							<div className="text-2xl font-bold">{finishedPerc.toFixed(0)}%</div>
+							<div className="text-2xl font-bold">{finishedPerc.toFixed(0)}%</div> {/* TODO: Change variables to final */}
 							<div className="text-l font-bold">TBD</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
@@ -193,23 +191,18 @@ export default async function Page() {
 				<Table>
 					<TableHeader>
 					    <TableRow>
-							<TableHead className="w-[75px] text-center">Page</TableHead>
 							<TableHead className="w-[100px]">Team</TableHead>
 							<TableHead>Project</TableHead>
 							<TableHead>Track</TableHead>
 							<TableHead className="text-center">Table</TableHead>
 							<TableHead className="text-center">Submitted</TableHead>
 							<TableHead className="text-center">Judged</TableHead>
+							<TableHead className="w-[75px] text-center">Page</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{projects.map((project) => (
 							<TableRow key={project.id}>
-								<TableCell className="font-medium">
-									<Link href={`/~${project.tag}`}> {/* Currently links to team's page */}
-										<Button variant="secondary" className="hover:bg-gray-800">View</Button>
-									</Link>
-								</TableCell>
 								<TableCell className="font-medium">{project.team}</TableCell>
 								<TableCell className="font-medium">{project.name}</TableCell>
 								<TableCell className="font-medium">{project.track}</TableCell>
@@ -217,6 +210,11 @@ export default async function Page() {
 								<TableCell className="font-medium text-center">{project.submissionTime === "" ? `\u2715` : `\u2713 ` + project.submissionTime}</TableCell>
 								{/* TODO if judged, display check, else display x */}
 								<TableCell className="font-medium text-center">&#x2715;</TableCell>
+								<TableCell className="font-medium">
+									<Link href={`/~${project.tag}`}> {/* Currently links to team's page */}
+										<Button variant="secondary" className="hover:bg-gray-800">View</Button>
+									</Link>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
