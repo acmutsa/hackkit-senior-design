@@ -26,10 +26,6 @@ export default async function Page() {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
-	const allTracks = await db
-		.select()
-		.from(tracks);
-
 	const allTeams = await db
 		.select()
 		.from(teams);
@@ -41,13 +37,14 @@ export default async function Page() {
 	const teamSub = await db
 		.select()
 		.from(teams)
-		.fullJoin(submissions, eq(teams.id, submissions.teamID));
+		.fullJoin(submissions, eq(teams.id, submissions.teamID))
+		.fullJoin(interviews, eq(interviews.submissionID, submissions.id));
 
 	const getTrack = await db
 		.select()
 		.from(tracks)
 		.leftJoin(trackSubmissions, eq(tracks.id, trackSubmissions.trackID));
-
+		
 	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
@@ -61,9 +58,19 @@ export default async function Page() {
 		name:           teamSub.submissions?.name ?? "---",
 		link:           teamSub.submissions?.link ?? "",
 		track:          getTrack.find((track) => track.track_submissions?.submissionID === teamSub.submissions?.id)?.tracks.name ?? "---",
-		table:          allInterviews.find((interview) => interview.submissionID === teamSub.submissions?.id)?.table ?? -1,
+		table:          teamSub.interviews?.table ?? -1,
 		submissionTime: teamSub.submissions?.time.toDateString() || "",
 	}});
+
+	/* Sort projects to show unsubmitted last */
+	const sortedProjects = projects.sort(
+		(a: Project, b: Project) =>
+			a.submissionTime === ""
+				? 1
+				: b.submissionTime === ""
+				? -1
+				: new Date(a.submissionTime).getTime() - new Date(b.submissionTime).getTime()
+	);
 
 	/* Calculating the percentage of submitted projects */
 	var submitted: number = 0;
@@ -213,7 +220,7 @@ export default async function Page() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{projects.map((project) => (
+						{sortedProjects.map((project) => (
 							<TableRow key={project.id}>
 								<TableCell className="font-medium">{project.team}</TableCell>
 								<TableCell className="font-medium">{project.name}</TableCell>
