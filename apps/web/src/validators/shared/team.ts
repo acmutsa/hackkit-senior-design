@@ -1,34 +1,52 @@
 import { z } from "zod";
 
 export const newTeamValidator = z.object({
-	name: z
-		.string()
-		.min(3, {
-			message: "Team name must be at least 3 characters long",
-		})
-		.max(50, {
-			message: "Team name must be less than 50 characters long",
-		})
-		.regex(/^[a-zA-Z0-9 ]+$/, {
-			message: "Team name must be alphanumeric and have no special characters",
-		}),
-	bio: z.string().max(200, {
-		message: "Team bio must be less than 200 characters long",
-	}),
-	tag: z
-		.string()
-		.min(3, {
-			message: "Team Tag must be at least 3 characters long",
-		})
-		.max(25, {
-			message: "Team Tag must be less than 25 characters long",
-		})
-		.regex(/^[a-zA-Z0-9]+$/, {
-			message: "Team Tag must be alphanumeric and have no spaces",
-		}),
-	photo: z.string().url(),
+    name: z
+        .string()
+        .min(3, {
+            message: "Team name must be at least 3 characters long",
+        })
+        .max(50, {
+            message: "Team name must be less than 50 characters long",
+        })
+        .regex(/^[a-zA-Z0-9 ]+$/, {
+            message:
+                "Team name must be alphanumeric and have no special characters",
+        }),
+    bio: z.string().max(200, {
+        message: "Team bio must be less than 200 characters long",
+    }),
+    tag: z
+        .string()
+        .min(3, {
+            message: "Team Tag must be at least 3 characters long",
+        })
+        .max(25, {
+            message: "Team Tag must be less than 25 characters long",
+        })
+        .regex(/^[a-zA-Z0-9]+$/, {
+            message: "Team Tag must be alphanumeric and have no spaces",
+        }),
+    photo: z.string().url(),
+});
+
+export const submissionValidator = z.object({
+    table: z
+        .number()
+        .min(1, {
+            message: "Table number must be greater than or equal to 1",
+        })
+        .max(100, {
+            message: "Table number must be less than or equal to 100",
+        }),
+    track: z.string().min(3, {
+        message: "Track must be at least 3 characters long",
+    }),
+    link: z.string().url({
+        message: "Link must be a valid URL",
+    }),
 });
 
 export const newInviteValidator = z.object({
-	inviteeTag: z.string(),
+    inviteeTag: z.string(),
 });

@@ -12,6 +12,7 @@ import TeamInvite from "@/components/dash/team/invite";
 import { Fragment } from "react";
 import { Badge } from "@/components/shadcn/ui/badge";
 import { Value } from "@radix-ui/react-select";
+import NewSubmission from "@/components/dash/main/team/NewSubmission";
 
 export default async function Page() {
     const { userId } = auth();
@@ -38,6 +39,7 @@ export default async function Page() {
             },
         },
     });
+
     if (!user) return null;
 
     if (!user.teamID) {
@@ -195,56 +197,7 @@ export default async function Page() {
                     <div></div>
                     <div className="flex flex-col items-center col-span-2 mb-8">
                         <div className="flex grid-cols-2 col-span-2 justify-center border-muted mt-4">
-                            <form className="flex flex-wrap w-full text-black space-x-4">
-                                <input
-                                    type="hidden"
-                                    name="teamID"
-                                    value={team.id}
-                                    placeholder="Team ID"
-                                    className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 mb-4 focus:outline-none focus:ring focus:border-blue-500"
-                                />
-
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={team.name}
-                                    placeholder="Name"
-                                    className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 mb-4 focus:outline-none focus:ring focus:border-blue-500"
-                                />
-                                <input
-                                    type="number"
-                                    name="table"
-                                    placeholder="Table Number"
-                                    className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 mb-4 focus:outline-none focus:ring focus:border-blue-500"
-                                />
-
-                                <div className="relative mb-4 w-full">
-                                    <select
-                                        name="track"
-                                        className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 focus:outline-none focus:ring focus:border-blue-500"
-                                    >
-                                        <option value="Beginner">
-                                            Beginner
-                                        </option>
-                                        <option value="Intermediate">
-                                            Intermediate
-                                        </option>
-                                        <option value="Expert">Expert</option>
-                                    </select>
-                                </div>
-                                <input
-                                    type="text"
-                                    name="link"
-                                    placeholder="Link"
-                                    className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 mb-4 focus:outline-none focus:ring focus:border-blue-500"
-                                />
-                                <button
-                                    type="submit"
-                                    className="h-10 px-4 text-white font-semibold rounded-md bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                                >
-                                    Submit
-                                </button>
-                            </form>
+                            <NewSubmission></NewSubmission>
                         </div>
                         {submission && (
                             <div className="flex justify-center mt-4">
