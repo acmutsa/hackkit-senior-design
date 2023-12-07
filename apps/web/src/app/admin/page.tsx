@@ -44,7 +44,12 @@ export default async function Page() {
 		.select()
 		.from(tracks)
 		.leftJoin(trackSubmissions, eq(tracks.id, trackSubmissions.trackID));
-		
+
+	const getInterviews = await db
+		.select()
+		.from(submissions)
+		.leftJoin(interviews, eq(submissions.id, interviews.submissionID));
+console.log(getInterviews)
 	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
@@ -79,11 +84,18 @@ export default async function Page() {
 	});
 	const submissionPerc = (submitted * 100) / projects.length;
 
-    /* TESTING - Calculating the percentage of judging completed */
-	const numInterviews = allTeams.length * 6; // Total interviews, assuming 6 per submission.
-	const comInterviews = numInterviews / 3;   // Assuming 1/3 of interviews have been completed.
+    /* Calculating the percentage of judging completed */
+	var doneInterviews: number = 0;
+	allInterviews.map((interview) => {
+		if (interview.complete) { doneInterviews++; }
+	});
+	var completionPerc: number = 0;
+	allInterviews.length == 0 ?
+		completionPerc = 0
+		:
+		completionPerc = (doneInterviews * 100) / allInterviews.length;
 
-	const completionPerc = (comInterviews * 100) / numInterviews; // TODO
+	/* Calculating the percentage of fully judged projects */
 	const finishedPerc = 25;   // TODO
 
 	return (
@@ -171,7 +183,7 @@ export default async function Page() {
 						{/* Percentage of INTERVIEWS done out off all interviews */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{completionPerc.toFixed(0)}%</div>
-							<div className="text-l font-bold">{comInterviews}/{numInterviews}</div> {/* TODO: Change variables to final */}
+							<div className="text-l font-bold">{doneInterviews}/{allInterviews.length}</div> {/* TODO: Change variables to final */}
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${completionPerc}%`}}></div>
