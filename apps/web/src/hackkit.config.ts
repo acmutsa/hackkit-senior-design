@@ -2,8 +2,8 @@ export const defaultTheme = "dark";
 
 export default {
 	hackathonName: "HackKit",
-	itteration: "2023",
-	defaultMetaDataDescription: "Powerful and easy to use hackathon managment platform.",
+	iteration: "2023",
+	defaultMetaDataDescription: "Powerful and easy to use hackathon management platform.",
 	localUniversityName: "The University of Texas at San Antonio",
 	localUniversityShortIDName: "ABC123",
 	localUniversityShortIDMaxLength: 6,
@@ -106,6 +106,14 @@ export default {
 		},
 	},
 	maxTeamSize: 4,
+    rooms: [
+        { name: "1C3",  startTable: 0, tableCount: 2},
+        { name: "1C11", startTable: 0, tableCount: 2},
+        { name: "110",  startTable: 0, tableCount: 2},
+        { name: "2C2",  startTable: 0, tableCount: 2},
+        { name: "200A", startTable: 0, tableCount: 2},
+        { name: "X200", startTable: 0, tableCount: 2},
+    ],
 } as const;
 
 // Its important that this is kept in sync with the database schema.
