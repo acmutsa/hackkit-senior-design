@@ -27,31 +27,38 @@ export default function JudgeTimer (props: {defaultTime: number}) {
                 break;
 
             case TimerMode.RESET:
-                clearInterval(timer);
+                clearInterval(timer); 
                 setTimerMode(TimerMode.PAUSE);
                 setTimeLeft(props.defaultTime);
                 break;
 
             case TimerMode.PAUSE:
-                clearInterval(timer);
+                clearInterval(timer); 
                 setTimerMode(TimerMode.PAUSE);
                 break;
         }
 
         return () => {
-            clearInterval(timer);
+            clearInterval(timer); 
         }
-
     }, [timerMode]);
 
+    const handleStartButtonClick = () => {
+        setTimerMode((prevMode) =>
+            prevMode === TimerMode.START || prevMode === TimerMode.RESET ? TimerMode.PAUSE : TimerMode.START
+        );
+    };
+
     return (
-        <>
+        <div className="p-6 pt-0 flex flex-col items-center space-y-5 max-w-[300px]">
             <div className="text-6xl"> {secondsToString(timeLeft)} </div>
-            <div className="w-33% space-x-2">
-                <Button onClick={() => {setTimerMode(TimerMode.START)}} className="bg-lime-300">   Start </Button>
-                <Button onClick={() => {setTimerMode(TimerMode.PAUSE)}} className="bg-red-400">    Pause </Button>
-                <Button onClick={() => {setTimerMode(TimerMode.RESET)}} className="bg-yellow-300"> Reset </Button>
+            <div className="flex justify-center space-x-2 overflow-hidden flex-shrink-0">
+                <Button onClick={handleStartButtonClick} 
+                    className={`${ timerMode === TimerMode.PAUSE ? "bg-lime-300" : "bg-red-400" } flex-shrink-0 w-20`}>
+                    {timerMode === TimerMode.START ? "Pause" : "Start"}
+                </Button>
+                <Button onClick={() => {setTimerMode(TimerMode.RESET)}} className="bg-yellow-300 flex-shrink-0"> Reset </Button>
             </div>
-        </>
+        </div>
     );
 }
