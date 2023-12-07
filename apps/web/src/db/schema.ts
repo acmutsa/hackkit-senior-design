@@ -134,17 +134,6 @@ export const teams = pgTable("teams",
 	ownerID:   varchar("owner_id", { length: 255 }).notNull(),
 });
 
-export const submissions = pgTable("submissions",
-{
-    id:     varchar("id", {length: 50}).notNull().primaryKey().unique(),
-    teamID: varchar("team_id", {length: 50}).notNull(),
-    table:  integer("table"),
-    name:   varchar("name", {length: 255}).notNull(),
-    track:  varchar("track", {length: 50}).notNull(),
-    link:   varchar("link").notNull(),
-    time:   timestamp("time").notNull().defaultNow()
-});
-
 export const invites = pgTable("invites",
 	{
 		inviteeID: varchar("invitee_id", { length: 255 }).notNull(),
@@ -157,11 +146,48 @@ export const invites = pgTable("invites",
 	})
 );
 
+export const submissions = pgTable("submissions",
+{
+    id:     varchar("id", {length: 50}).notNull().primaryKey().unique(),
+    teamID: varchar("team_id", {length: 50}).notNull().references(() => teams.id),
+    name:   varchar("name", {length: 255}).notNull(),
+    link:   varchar("link").notNull(),
+    time:   timestamp("time").notNull().defaultNow()
+});
+
+export const tracks = pgTable("tracks",
+{
+    id:   integer("id").notNull().primaryKey().unique(),
+    name: varchar("name").notNull().unique()
+});
+
+export const criteria = pgTable("criteria",
+{
+    trackID: integer("track_id").notNull().references(() => tracks.id),
+    name:    varchar("name", {length: 20}).notNull().primaryKey().unique()
+});
+
+export const trackSubmissions = pgTable("track_submissions",
+{
+    id:           integer("id").notNull().primaryKey().unique(),
+    trackID:      integer("track_id").notNull().references(() => tracks.id),
+    submissionID: varchar("submission_id").notNull().references(() => submissions.id)
+});
+
+export const interviews = pgTable("interviews",
+{
+    id:           integer("id").notNull().primaryKey().unique(),
+	judgeID:      varchar("judge_id", { length: 255 }).notNull().references(() => users.clerkID),
+    submissionID: varchar("submission_id", {length: 50}).notNull().references(() => submissions.id),
+    table:        integer("table").notNull(),
+    complete:     boolean("complete").notNull().default(false)
+});
+
 export const errorLog = pgTable("error_log",
 {
 	id:        varchar("id", { length: 50 }).notNull().primaryKey(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
-	userID:    varchar("user_id", { length: 255 }),
+	userID:    varchar("user_id", { length: 255 }).references(() => users.clerkID),
 	route:     varchar("route", { length: 255 }),
 	message:   text("message").notNull(),
 });
@@ -206,15 +232,41 @@ export const scansRelations = relations(scans, ({ one }) => ({
 	}),
 }));
 
-export const teamsRelations = relations(teams, ({ one, many }) => ({
+export const teamsRelations = relations(teams, ({ many }) => ({
 	members: many(users),
 	invites: many(invites),
 }));
 
-export const submissionRelations = relations(submissions, ({ one }) => ({
+export const submissionRelations = relations(submissions, ({ one, many }) => ({
     team: one(teams, {
         fields: [submissions.teamID],
-        references: [teams.id],
+        references: [teams.id]
+    }),
+    tracks: many(trackSubmissions),
+    // interviews: many(interviews),
+    interviews: one(interviews, {
+        fields: [submissions.id],
+        references: [interviews.submissionID]
+    }),
+}));
+
+export const tracksRelations = relations(tracks, ({ one, many }) => ({
+    // criteria: many(criteria),
+    criteria: one(criteria, {
+        fields: [tracks.id],
+        references: [criteria.trackID]
+    }),
+    submissions: many(trackSubmissions)
+}));
+
+export const trackSubmissionsRelations = relations(trackSubmissions, ({ one }) => ({
+    track: one(tracks, {
+        fields: [trackSubmissions.trackID],
+        references: [tracks.id]
+    }),
+    submission: one(submissions, {
+		fields: [trackSubmissions.submissionID],
+		references: [submissions.id]
     })
 }));
 
