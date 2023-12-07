@@ -49,7 +49,7 @@ export default async function Page() {
 		.select()
 		.from(submissions)
 		.leftJoin(interviews, eq(submissions.id, interviews.submissionID));
-console.log(getInterviews)
+
 	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
 	const totalRSVPCount = 0;    // TODO
