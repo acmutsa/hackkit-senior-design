@@ -49,7 +49,7 @@ export default async function Page() {
 		tag:            team.tag,
 		team:           team.name,
 		name:           allSubmissions.find((submission) => submission.teamID === team.id)?.name || "---",
-		link:           allSubmissions.find((submission) => submission.teamID === team.id)?.link || "---",
+		link:           allSubmissions.find((submission) => submission.teamID === team.id)?.link || "",
 		track:          allSubmissions.find((submission) => submission.teamID === team.id)?.track || "---",
 		table:          allSubmissions.find((submission) => submission.teamID === team.id)?.table || -1,
 		submissionTime: allSubmissions.find((submission) => submission.teamID === team.id)?.time.toDateString() || "",
@@ -213,9 +213,13 @@ export default async function Page() {
 								{/* TODO if judged, display check, else display x */}
 								<TableCell className="font-medium text-center">&#x2715;</TableCell>
 								<TableCell className="font-medium">
-									<Link href={project.link} rel="noopener noreferrer" target="_blank">
-										<Button variant="secondary" className="hover:bg-gray-800">View</Button>
-									</Link>
+									{project.link == "" ? (
+										<Button disabled variant="secondary">View</Button>
+									) : (
+										<Link href={project.link} rel="noopener noreferrer" target="_blank">
+											<Button variant="secondary" className="hover:bg-gray-800">View</Button>
+										</Link>
+									)}
 								</TableCell>
 							</TableRow>
 						))}
