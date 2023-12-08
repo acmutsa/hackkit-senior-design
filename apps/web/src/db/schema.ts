@@ -192,6 +192,13 @@ export const errorLog = pgTable("error_log",
 	message:   text("message").notNull(),
 });
 
+export const submissionsLog = pgTable("submissions_log",
+{
+	id:        varchar("id", { length: 50}).notNull().primaryKey(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	type:      varchar("type", { length: 50}).notNull(),
+})
+
 export const userRelations = relations(users, ({ one, many }) => ({
 	registrationData: one(registrationData, {
 		fields: [users.clerkID],

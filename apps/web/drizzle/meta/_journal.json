@@ -22,6 +22,13 @@
       "when": 1701927945936,
       "tag": "0002_nostalgic_skaar",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1702026630957,
+      "tag": "0003_normal_meltdown",
+      "breakpoints": true
     }
   ]
 }
