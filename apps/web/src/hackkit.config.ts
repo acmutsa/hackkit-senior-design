@@ -106,6 +106,7 @@ export default {
 		},
 	},
 	maxTeamSize: 4,
+    interviewsPerSubmission: 5,
     rooms: [
         { name: "1C3",  startTable: 0, tableCount: 2},
         { name: "1C11", startTable: 0, tableCount: 2},
