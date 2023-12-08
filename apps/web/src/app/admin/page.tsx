@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default async function Page() {
 
-	interface Project {            /* TODO: Dummy interviews -> Completion & Finished % */
+	interface Project {
 		id:             string,    /* Judged column to display (complete interviews) / (total interviews) */
 		tag:            string,    /* Display check + timestamp(?) when complete */
 		team:           string,
@@ -20,6 +20,9 @@ export default async function Page() {
 		track:          string,
 		table:          number,
 		submissionTime: string,
+		done:           number,
+		total:          number,
+		subID:          string,
 	};
 
 	const totalUserCount = await db
@@ -38,7 +41,6 @@ export default async function Page() {
 		.select()
 		.from(teams)
 		.fullJoin(submissions, eq(teams.id, submissions.teamID))
-		.fullJoin(interviews, eq(interviews.submissionID, submissions.id));
 
 	const getTrack = await db
 		.select()
@@ -63,8 +65,11 @@ export default async function Page() {
 		name:           teamSub.submissions?.name ?? "---",
 		link:           teamSub.submissions?.link ?? "",
 		track:          getTrack.find((track) => track.track_submissions?.submissionID === teamSub.submissions?.id)?.tracks.name ?? "---",
-		table:          teamSub.interviews?.table ?? -1,
+		table:          getInterviews.find((interview) => interview.submissions.id === teamSub.submissions?.id)?.interviews?.table ?? -1,
 		submissionTime: teamSub.submissions?.time.toDateString() || "",
+		done:           0,
+		total:          0,
+		subID:          teamSub.submissions?.id ?? "",
 	}});
 
 	/* Sort projects to show unsubmitted last */
@@ -96,7 +101,37 @@ export default async function Page() {
 		completionPerc = (doneInterviews * 100) / allInterviews.length;
 
 	/* Calculating the percentage of fully judged projects */
-	const finishedPerc = 25;   // TODO
+	const groupedInterviews: Record<string, any[]> = {};
+	allInterviews.forEach((interview) => {
+		const submission = interview.submissionID.toString();
+
+		if (groupedInterviews.hasOwnProperty(submission)) {
+			groupedInterviews[submission].push(interview);
+		} else {
+			groupedInterviews[submission] = [interview];
+		}
+	});
+
+	const totalJudging = Object.keys(groupedInterviews).length;
+	var doneJudging = 0;
+
+	Object.keys(groupedInterviews).forEach(judged => {
+		const check = groupedInterviews[judged];
+		const allComplete = check.every(interview => interview.complete === true);
+		if (allComplete) { doneJudging++; }
+
+		var count = 0;
+		var total = 0;
+		for (const element of check) {
+			if (element.complete) { count++; }
+			total++;
+		}
+
+		projects.find((project) => project.subID === judged)!.done = count;
+		projects.find((project) => project.subID === judged)!.total = total;
+	})
+
+	const finishedPerc = (doneJudging * 100) / totalJudging;
 
 	return (
 		<div className="w-full max-w-7xl mx-auto h-16">
@@ -199,7 +234,7 @@ export default async function Page() {
 						{/* Percentage of FULLY JUDGED projects */}
 						<CardContent className="flex flex-row items-center justify-between spapce-y-0">
 							<div className="text-2xl font-bold">{finishedPerc.toFixed(0)}%</div> {/* TODO: Change variables to final */}
-							<div className="text-l font-bold">TBD</div>
+							<div className="text-l font-bold">{doneJudging}/{totalJudging}</div>
 						</CardContent>
 						<div className="h-2 w-full bg-slate-500 rounded-2xl">
 							<div className={"h-2 bg-slate-100 rounded-2xl"} style={{width: `${finishedPerc}%`}}></div>
@@ -240,7 +275,7 @@ export default async function Page() {
 								<TableCell className="font-medium text-center">{project.table === -1 ? "---" : project.table}</TableCell>
 								<TableCell className="font-medium text-center">{project.submissionTime === "" ? `\u2715` : `\u2713 ` + project.submissionTime}</TableCell>
 								{/* TODO if judged, display check, else display x */}
-								<TableCell className="font-medium text-center">&#x2715;</TableCell>
+								<TableCell className="font-medium text-center">{project.done === 0 ? `\u2715` : project.done + "/" + project.total}</TableCell>
 								<TableCell className="font-medium">
 									{project.link == "" ? (
 										<Button disabled variant="secondary">View</Button>
