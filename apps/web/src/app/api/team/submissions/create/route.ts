@@ -52,16 +52,19 @@ export async function POST(req: Request) {
     try {
         await db.transaction(async (tx) => {
             await tx
-                .update(submissions)
-                .set({
+                .insert(submissions)
+                .values({
+                    id: nanoid(),
                     teamID: team.id,
-                    table: body.data.table,
                     name: team.name,
-                    track: body.data.track,
                     link: body.data.link,
                     time: currentTime,
-                })
-                .where(eq(submissions.id, submissionID));
+                });
+        });
+
+        return NextResponse.json({
+            success: true,
+            message: "Submission created successfully",
         });
     } catch (e) {
         const errorID = await logError({
@@ -71,7 +74,7 @@ export async function POST(req: Request) {
         });
         return NextResponse.json({
             success: false,
-            message: `An error occurred while creating your team. If this is a continuing issue, please reach out to ${c.issueEmail} with error ID ${errorID}.`,
+            message: `An error occurred while creating your submission. If this is a continuing issue, please reach out to ${c.issueEmail} with error ID ${errorID}.`,
         });
     }
 }

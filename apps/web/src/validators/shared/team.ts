@@ -31,14 +31,9 @@ export const newTeamValidator = z.object({
 });
 
 export const submissionValidator = z.object({
-    table: z
-        .number()
-        .min(1, {
-            message: "Table number must be greater than or equal to 1",
-        })
-        .max(100, {
-            message: "Table number must be less than or equal to 100",
-        }),
+    name: z.string().min(3, {
+        message: "Name must be at least 3 characters long",
+    }),
     track: z.string().min(3, {
         message: "Track must be at least 3 characters long",
     }),

@@ -31,11 +31,14 @@ import c from "@/hackkit.config";
 
 export default function submissionForm() {
     const formValidator = z.object({
-        table: z.number(),
+        name: z.string(),
         track: z.string(),
         link: z.string(),
     });
+
     const [loading, setLoading] = useState(false);
+    const [submissionSuccess, setSubmissionSuccess] = useState(false);
+
     const form = useForm<z.infer<typeof formValidator>>({
         resolver: zodResolver(formValidator),
         defaultValues: {
@@ -52,7 +55,7 @@ export default function submissionForm() {
             vReq: submissionValidator,
             vRes: BasicServerValidator,
             body: {
-                table: values.table,
+                name: values.name,
                 track: values.track,
                 link: values.link,
             },
@@ -67,6 +70,10 @@ export default function submissionForm() {
             console.log("error: ", res.data.message);
             return alert(res.data.message);
         }
+
+        setSubmissionSuccess(true);
+
+        form.reset();
     }
 
     return (
@@ -76,20 +83,20 @@ export default function submissionForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
             >
                 <input
-                    type="number"
-                    placeholder="Table Number"
-                    {...form.register("table")}
+                    type="text"
+                    placeholder="Name"
+                    {...form.register("name")}
                     className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 focus:outline-none focus:ring focus:border-blue-500"
                 />
 
                 <div className="relative w-full">
                     <select
-                        {...form.register("track")}
+                        {...form.register("track")}  
                         className="border border-gray-300 rounded-md py-2 px-4 w-full h-10 focus:outline-none focus:ring focus:border-blue-500"
                     >
                         <option value="Beginner">Beginner</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Expert">Expert</option>
+                        <option value="General">General</option>
+                        <option value="Design">Design</option>
                     </select>
                 </div>
 
@@ -112,6 +119,13 @@ export default function submissionForm() {
                         Submit
                     </button>
                 )}
+
+                {submissionSuccess && (
+                    <div className="mt-4 p-2 bg-green-100 border border-green-400 text-green-700 rounded">
+                        Submission successful!
+                    </div>
+                )}
+
             </form>
         </div>
     );
