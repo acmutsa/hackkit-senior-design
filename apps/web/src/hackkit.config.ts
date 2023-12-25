@@ -100,7 +100,7 @@ export default {
 
 // Its important that this is kept in sync with the database schema.
 
-export const perms = ["hacker", "volunteer", "mentor", "mlh", "admin", "super_admin"] as const;
+export const perms = ["Hacker", "Volunteer", "Mentor", "MLH", "Admin", "Super Admin"] as const;
 
 export const schools = [
 	"The University of Texas at San Antonio",
