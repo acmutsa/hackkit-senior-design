@@ -72,6 +72,16 @@ export const experiences = pgEnum("software_experience",
     "Expert",
 ]);
 
+export const heardFrom = pgEnum("heard_from",
+[
+    "Instagram",
+    "Class Presentation",
+    "Twitter",
+    "Event Site",
+    "Friend",
+    "Other",
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -122,7 +132,7 @@ export const registrationData = pgTable("registration_data",
                             .default("https://static.acmutsa.org/No%20Resume%20Provided.pdf"),
 	dietRestrictions:   json        ("diet_restrictions"                 ) ,
 	accommodationNote:  text        ("accommodation_note"                ) ,
-	heardFrom:          varchar     ("heard_from",          {length:  50}) ,
+	heardFrom:          heardFrom   ("heard_from"                        ) ,
 });
 
 export const profileData = pgTable("profile_data",
