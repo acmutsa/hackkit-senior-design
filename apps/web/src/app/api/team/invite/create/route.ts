@@ -73,7 +73,7 @@ export async function POST(req: Request): serverZodResponse<typeof BasicServerVa
 	}
 
 	await db.insert(invites).values({
-		inviteeID: invitee.clerkID,
+		inviteeID: invitee.id,
 		teamID: user.teamID,
 	});
 

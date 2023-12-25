@@ -88,48 +88,47 @@ export async function POST(req: Request) {
 
 	await db.transaction(async (tx) => {
 		await tx.insert(users).values({
-			clerkID: user.id,
+			id: user.id,
 			firstName: body.firstName,
 			lastName: body.lastName,
-			email: body.email,
 			hackerTag: body.hackerTag.toLowerCase(),
-			registrationComplete: true,
+			email: body.email,
 			group: totalUserCount[0].count % c.groups.length,
-			hasSearchableProfile: body.profileIsSearchable,
+			registrationComplete: true,
+			profileSearchable: body.profileIsSearchable,
 		});
 
 		await tx.insert(registrationData).values({
-			clerkID: user.id,
-			acceptedMLHCodeOfConduct: body.acceptsMLHCodeOfConduct,
-			accommodationNote: body.accommodationNote || null,
+			userID: user.id,
 			age: body.age,
-			dietRestrictions: body.dietaryRestrictions,
-			ethnicity: body.ethnicity,
 			gender: body.gender,
-			hackathonsAttended: body.hackathonsAttended,
-			heardFrom: body.heardAboutEvent || null,
-			levelOfStudy: body.levelOfStudy,
-			major: body.major,
 			race: body.race,
-			sharedDataWithMLH: body.shareDataWithMLH,
-			shirtSize: body.shirtSize,
+			ethnicity: body.ethnicity,
 			shortID: body.shortID,
-			softwareExperience: body.softwareBuildingExperience,
 			university: body.university,
-			wantsToReceiveMLHEmails: body.wantsToReceiveMLHEmails,
+			major: body.major,
+			levelOfStudy: body.levelOfStudy,
+			softwareExperience: body.softwareBuildingExperience,
+			hackathonsAttended: body.hackathonsAttended,
+			shirtSize: body.shirtSize,
+			dataShareable: body.shareDataWithMLH,
+			emailable: body.wantsToReceiveMLHEmails,
 			GitHub: body.github,
 			LinkedIn: body.linkedin,
 			PersonalWebsite: body.personalWebsite,
 			resume: body.resume,
+			dietRestrictions: body.dietaryRestrictions,
+			accommodationNote: body.accommodationNote || null,
+			heardFrom: body.heardAboutEvent || null,
 		});
 
 		await tx.insert(profileData).values({
-			bio: body.bio,
-			discordUsername: body.profileDiscordName,
 			hackerTag: body.hackerTag.toLowerCase(),
-			profilePhoto: user.profileImageUrl,
+			discord: body.profileDiscordName,
 			pronouns: body.pronouns,
+			bio: body.bio,
 			skills: [],
+			profilePhoto: user.profileImageUrl,
 		});
 	});
 
