@@ -233,7 +233,7 @@ export const interviews = pgTable("interviews",
     	judgeID:      varchar ("judge_id",      {length: 32}) .notNull().references(() => users.id),
         submissionID: varchar ("submission_id", {length: 21}) .notNull().references(() => submissions.teamID),
         table:        integer ("table"                      ) .notNull(),
-        completed:    boolean ("completed"                  ) .notNull().default(false)
+        grade:        json    ("grade"                      ) ,
     },
     (table) => ({
         id: primaryKey(table.judgeID, table.submissionID),
