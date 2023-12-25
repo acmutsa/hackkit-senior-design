@@ -58,37 +58,37 @@ export default {
 	startDate: new Date(2023, 6, 15).setHours(9),
 	prettyLocation: "San Pedro I, UTSA",
 	roleBadges: {
-		hacker: {
+		Hacker: {
 			title: "Hacker",
 			color: "hsl(var(--hackathon-primary))",
 			foreground: "#ffffff",
 			checked: false,
 		},
-		volunteer: {
+		Volunteer: {
 			title: "Volunteer",
 			color: "#4CAF50",
 			foreground: "#ffffff",
 			checked: false,
 		},
-		mentor: {
+		Mentor: {
 			title: "Mentor",
 			color: "#9C27B0",
 			foreground: "#ffffff",
 			checked: false,
 		},
-		mlh: {
+		MLH: {
 			title: "MLH",
 			color: "#ffffff",
 			foreground: "#E73426",
 			checked: "#E73426",
 		},
-		admin: {
+		Admin: {
 			title: "Organizer",
 			color: "#f59e0b",
 			foreground: "#ffffff",
 			checked: true,
 		},
-		super_admin: {
+		"Super Admin": {
 			title: "Organizer",
 			color: "#f59e0b",
 			foreground: "#ffffff",
@@ -97,10 +97,6 @@ export default {
 	},
 	maxTeamSize: 4,
 } as const;
-
-// Its important that this is kept in sync with the database schema.
-
-export const perms = ["hacker", "volunteer", "mentor", "mlh", "admin", "super_admin"] as const;
 
 export const schools = [
 	"The University of Texas at San Antonio",
