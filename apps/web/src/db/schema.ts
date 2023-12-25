@@ -94,12 +94,12 @@ export const shirtSize = pgEnum("shirt_size",
 
 export const role = pgEnum("role",
 [
-	"hacker",
-	"volunteer",
-	"mentor",
-	"mlh",
-	"admin",
-	"super_admin",
+	"Hacker",
+	"Volunteer",
+	"Mentor",
+	"MLH",
+	"Admin",
+	"Super Admin",
 ]);
 
 
@@ -108,7 +108,7 @@ export const users = pgTable("users",
 	id:                   varchar   ("id",                   {length:  32}) .primaryKey(),
 	firstName:            varchar   ("first_name",           {length:  50}) .notNull(),
 	lastName:             varchar   ("last_name",            {length:  50}) .notNull(),
-	role:                 role      ("role"                               ) .notNull().default("hacker"),
+	role:                 role      ("role"                               ) .notNull().default("Hacker"),
 	hackerTag:            varchar   ("hacker_tag",           {length:  15}) .notNull().unique(),
 	email:                varchar   ("email",                {length: 255}) .notNull().unique(),
 	teamID:               varchar   ("team_id",              {length:  21}) ,
