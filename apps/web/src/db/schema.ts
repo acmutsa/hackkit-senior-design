@@ -64,6 +64,14 @@ export const studyLevels = pgEnum("level_of_study",
     "Other,"
 ]);
 
+export const experiences = pgEnum("software_experience",
+[
+    "Beginner",
+    "Intermediate",
+    "Advanced",
+    "Expert",
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -102,7 +110,7 @@ export const registrationData = pgTable("registration_data",
 	university:         varchar     ("university",          {length:  80}) .notNull(),
 	major:              varchar     ("major",               {length:  80}) .notNull(),
 	levelOfStudy:       studyLevels ("level_of_study"                    ) .notNull(),
-	softwareExperience: varchar     ("software_experience", {length:  15}) .notNull(),
+	softwareExperience: experiences ("software_experience"               ) .notNull(),
 	hackathonsAttended: integer     ("hackathons_attended"               ) .notNull(),
 	shirtSize:          varchar     ("shirt_size",          {length:   5}) .notNull(),
 	dataShareable:      boolean     ("data_shareable"                    ) .notNull(),
