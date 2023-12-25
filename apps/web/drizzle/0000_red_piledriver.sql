@@ -35,7 +35,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "role" AS ENUM('Hacker', 'Volunteer', 'Mentor', 'MLH', 'Admin', 'Super Admin');
+ CREATE TYPE "role" AS ENUM('Hacker', 'Judge', 'Volunteer', 'Mentor', 'MLH', 'Admin', 'Super Admin');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

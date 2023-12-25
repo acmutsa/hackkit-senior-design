@@ -95,6 +95,7 @@ export const shirtSize = pgEnum("shirt_size",
 export const role = pgEnum("role",
 [
 	"Hacker",
+    "Judge",
 	"Volunteer",
 	"Mentor",
 	"MLH",
