@@ -21,7 +21,7 @@ export default async function ProfileButton() {
 	const { userId } = await auth();
 	if (!userId) return null;
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 		with: { profileData: true },
 	});
 	if (!user) return null;

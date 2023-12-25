@@ -27,7 +27,7 @@ export async function POST(req: Request): serverZodResponse<typeof BasicServerVa
 	}
 
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 		with: {
 			team: true,
 			invites: {
@@ -76,7 +76,7 @@ export async function POST(req: Request): serverZodResponse<typeof BasicServerVa
 		});
 	}
 
-	await db.update(users).set({ teamID: user.invites[0].teamID }).where(eq(users.clerkID, userId));
+	await db.update(users).set({ teamID: user.invites[0].teamID }).where(eq(users.id, userId));
 	// TODO: would be interesting to see if the and() could be reomved here in favor of directly looking up the composite key.
 	await db
 		.update(invites)

@@ -17,7 +17,7 @@ export default async function Page() {
 
 	// TODO: make this db query not so bad
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 		with: {
 			invites: true,
 			team: {

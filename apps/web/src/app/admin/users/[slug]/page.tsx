@@ -8,7 +8,7 @@ import c from "@/hackkit.config";
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, params.slug),
+		where: eq(users.id, params.slug),
 		with: {
 			profileData: true,
 			registrationData: true,

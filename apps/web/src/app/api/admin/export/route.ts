@@ -35,7 +35,7 @@ export async function GET() {
 	if (!userId) return new Response("Unauthorized", { status: 401 });
 
 	const reqUserRecord = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 	});
 
 	if (!reqUserRecord || (reqUserRecord.role !== "super_admin" && reqUserRecord.role !== "admin")) {
