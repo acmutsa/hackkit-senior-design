@@ -38,6 +38,16 @@ export const genders = pgEnum("gender",
     "Prefer not to say"
 ]);
 
+export const races = pgEnum("race",
+[
+    "Native American",
+    "Asian / Pacific Islander",
+    "Black / African American",
+    "White / Caucasian",
+    "Multiple / Other",
+    "Prefer not to say",
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -70,7 +80,7 @@ export const registrationData = pgTable("registration_data",
 	userID:             varchar ("user_id",             {length:  32}) .primaryKey().references(() => (users.id)),
     age:                integer ("age"                               ) .notNull(),
 	gender:             genders ("gender"                            ) .notNull(),
-	race:               varchar ("race",                {length:  25}) .notNull(),
+	race:               races   ("race"                              ) .notNull(),
 	ethnicity:          varchar ("ethnicity",           {length:  25}) .notNull(),
 	shortID:            varchar ("short_id",            {length:  10}) ,
 	university:         varchar ("university",          {length:  80}) .notNull(),
