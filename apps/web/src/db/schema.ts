@@ -48,6 +48,12 @@ export const races = pgEnum("race",
     "Prefer not to say",
 ]);
 
+export const ethnicities  = pgEnum("ethnicity",
+[
+    "Hispanic or Latino",
+    "Not Hispanic or Latino",
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -77,28 +83,28 @@ export const users = pgTable("users",
 
 export const registrationData = pgTable("registration_data",
 {
-	userID:             varchar ("user_id",             {length:  32}) .primaryKey().references(() => (users.id)),
-    age:                integer ("age"                               ) .notNull(),
-	gender:             genders ("gender"                            ) .notNull(),
-	race:               races   ("race"                              ) .notNull(),
-	ethnicity:          varchar ("ethnicity",           {length:  25}) .notNull(),
-	shortID:            varchar ("short_id",            {length:  10}) ,
-	university:         varchar ("university",          {length:  80}) .notNull(),
-	major:              varchar ("major",               {length:  80}) .notNull(),
-	levelOfStudy:       varchar ("level_of_study",      {length:  20}) .notNull(),
-	softwareExperience: varchar ("software_experience", {length:  15}) .notNull(),
-	hackathonsAttended: integer ("hackathons_attended"               ) .notNull(),
-	shirtSize:          varchar ("shirt_size",          {length:   5}) .notNull(),
-	dataShareable:      boolean ("data_shareable"                    ) .notNull(),
-	emailable:          boolean ("emailable"                         ) .notNull(),
-	GitHub:             varchar ("github",              {length: 100}) ,
-	LinkedIn:           varchar ("linkedin",            {length: 100}) ,
-	PersonalWebsite:    varchar ("personal_website",    {length: 100}) ,
-	resume:             varchar ("resume",              {length: 255}) .notNull()
+	userID:             varchar     ("user_id",             {length:  32}) .primaryKey().references(() => (users.id)),
+    age:                integer     ("age"                               ) .notNull(),
+	gender:             genders     ("gender"                            ) .notNull(),
+	race:               races       ("race"                              ) .notNull(),
+	ethnicity:          ethnicities ("ethnicity"                         ) .notNull(),
+	shortID:            varchar     ("short_id",            {length:  10}) ,
+	university:         varchar     ("university",          {length:  80}) .notNull(),
+	major:              varchar     ("major",               {length:  80}) .notNull(),
+	levelOfStudy:       varchar     ("level_of_study",      {length:  20}) .notNull(),
+	softwareExperience: varchar     ("software_experience", {length:  15}) .notNull(),
+	hackathonsAttended: integer     ("hackathons_attended"               ) .notNull(),
+	shirtSize:          varchar     ("shirt_size",          {length:   5}) .notNull(),
+	dataShareable:      boolean     ("data_shareable"                    ) .notNull(),
+	emailable:          boolean     ("emailable"                         ) .notNull(),
+	GitHub:             varchar     ("github",              {length: 100}) ,
+	LinkedIn:           varchar     ("linkedin",            {length: 100}) ,
+	PersonalWebsite:    varchar     ("personal_website",    {length: 100}) ,
+	resume:             varchar     ("resume",              {length: 255}) .notNull()
                             .default("https://static.acmutsa.org/No%20Resume%20Provided.pdf"),
-	dietRestrictions:   json    ("diet_restrictions"                 ) ,
-	accommodationNote:  text    ("accommodation_note"                ) ,
-	heardFrom:          varchar ("heard_from",          {length:  50}) ,
+	dietRestrictions:   json        ("diet_restrictions"                 ) ,
+	accommodationNote:  text        ("accommodation_note"                ) ,
+	heardFrom:          varchar     ("heard_from",          {length:  50}) ,
 });
 
 export const profileData = pgTable("profile_data",
