@@ -23,6 +23,7 @@ import {
 import { relations } from "drizzle-orm";
 
 export const inviteType = pgEnum("status", ["pending", "accepted", "declined"]);
+export const genders = pgEnum("gender", ["Male", "Female", "Non-binary", "Other", "Prefer not to say"])
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -54,7 +55,7 @@ export const registrationData = pgTable("registration_data",
 {
 	userID:             varchar ("user_id",             {length:  32}) .primaryKey().references(() => (users.id)),
     age:                integer ("age"                               ) .notNull(),
-	gender:             varchar ("gender",              {length:  15}) .notNull(),
+	gender:             genders ("gender"                            ) .notNull(),
 	race:               varchar ("race",                {length:  25}) .notNull(),
 	ethnicity:          varchar ("ethnicity",           {length:  25}) .notNull(),
 	shortID:            varchar ("short_id",            {length:  10}) ,
