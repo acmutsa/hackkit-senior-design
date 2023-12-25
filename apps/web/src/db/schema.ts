@@ -9,10 +9,9 @@ more info: https://orm.drizzle.team/kit-docs/overview
 */
 
 import {
-	bigserial,
+	serial,
 	text,
 	varchar,
-	uniqueIndex,
 	boolean,
 	timestamp,
 	integer,
@@ -23,100 +22,157 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-export const fileTypesEnum = pgEnum("type", ["generic", "resume"]);
-export const inviteType = pgEnum("status", ["pending", "accepted", "declined"]);
-export const roles = pgEnum("role",
+export const inviteType = pgEnum("status",
 [
-	"hacker",
-	"volunteer",
-	"mentor",
-	"mlh",
-	"admin",
-	"super_admin",
+    "pending",
+    "accepted",
+    "declined",
+]);
+
+export const gender = pgEnum("gender",
+[
+    "Male",
+    "Female",
+    "Non-binary",
+    "Other",
+    "Prefer not to say"
+]);
+
+export const race = pgEnum("race",
+[
+    "Native American",
+    "Asian / Pacific Islander",
+    "Black / African American",
+    "White / Caucasian",
+    "Multiple / Other",
+    "Prefer not to say",
+]);
+
+export const ethnicity  = pgEnum("ethnicity",
+[
+    "Hispanic or Latino",
+    "Not Hispanic or Latino",
+]);
+
+export const studyLevel = pgEnum("level_of_study",
+[
+    "Freshman",
+    "Sophomore",
+    "Junior",
+    "Senior",
+    "Recent Grad",
+    "Other,"
+]);
+
+export const experience = pgEnum("software_experience",
+[
+    "Beginner",
+    "Intermediate",
+    "Advanced",
+    "Expert",
+]);
+
+export const heardFrom = pgEnum("heard_from",
+[
+    "Instagram",
+    "Class Presentation",
+    "Twitter",
+    "Event Site",
+    "Friend",
+    "Other",
+]);
+
+export const shirtSize = pgEnum("shirt_size",
+[
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL",
+]);
+
+export const role = pgEnum("role",
+[
+	"Hacker",
+	"Volunteer",
+	"Mentor",
+	"MLH",
+	"Admin",
+	"Super Admin",
 ]);
 
 
-export const users = pgTable("users", 
+export const users = pgTable("users",
 {
-	clerkID:                varchar("clerk_id", { length: 255 }).notNull().primaryKey().unique(),
-	firstName:              varchar("first_name", { length: 50 }).notNull(),
-	lastName:               varchar("last_name", { length: 50 }).notNull(),
-	email:                  varchar("email", { length: 255 }).notNull().unique(),
-	hackerTag:              varchar("hacker_tag", { length: 50 }).notNull().unique(),
-	registrationComplete:   boolean("registration_complete").notNull().default(false),
-	createdAt:              timestamp("created_at").notNull().defaultNow(),
-	hasSearchableProfile:   boolean("has_searchable_profile").notNull().default(true),
-	group:                  integer("group").notNull(),
-	role:                   roles("role").notNull().default("hacker"),
-	checkinTimestamp:       timestamp("checkin_timestamp"),
-	teamID:                 varchar("team_id", { length: 50 }),
+	id:                   varchar   ("id",                   {length:  32}) .primaryKey(),
+	firstName:            varchar   ("first_name",           {length:  50}) .notNull(),
+	lastName:             varchar   ("last_name",            {length:  50}) .notNull(),
+	role:                 role      ("role"                               ) .notNull().default("Hacker"),
+	hackerTag:            varchar   ("hacker_tag",           {length:  15}) .notNull().unique(),
+	email:                varchar   ("email",                {length: 255}) .notNull().unique(),
+	teamID:               varchar   ("team_id",              {length:  21}) ,
+	group:                integer   ("group"                              ) .notNull(),
+	registrationComplete: boolean   ("registration_complete"              ) .notNull().default(false),
+	profileSearchable:    boolean   ("profile_searchable"                 ) .notNull().default(true),
+	createdAt:            timestamp ("created_at"                         ) .notNull().defaultNow(),
+	checkInTime:          timestamp ("check_in_time"                      ) ,
 });
 
 export const registrationData = pgTable("registration_data",
 {
-	clerkID:                    varchar("clerk_id", { length: 255 }).notNull().primaryKey().unique(),
-	age:                        integer("age").notNull(),
-	gender:                     varchar("gender", { length: 50 }).notNull(),
-	race:                       varchar("race", { length: 75 }).notNull(),
-	ethnicity:                  varchar("ethnicity", { length: 50 }).notNull(),
-	acceptedMLHCodeOfConduct:   boolean("accepted_mlh_code_of_conduct").notNull(),
-	sharedDataWithMLH:          boolean("shared_data_with_mlh").notNull(),
-	wantsToReceiveMLHEmails:    boolean("wants_to_receive_mlh_emails").notNull(),
-	university:                 varchar("university", { length: 200 }).notNull(),
-	major:                      varchar("major", { length: 200 }).notNull(),
-	shortID:                    varchar("short_id", { length: 50 }).notNull(),
-	levelOfStudy:               varchar("level_of_study", { length: 50 }).notNull(),
-	hackathonsAttended:         integer("hackathons_attended").notNull(),
-	softwareExperience:         varchar("software_experience", { length: 25 }).notNull(),
-	heardFrom:                  varchar("heard_from", { length: 50 }),
-	shirtSize:                  varchar("shirt_size", { length: 5 }).notNull(),
-	dietRestrictions:           json("diet_restrictions").notNull(),
-	accommodationNote:          text("accommodation_note"),
-	GitHub:                     varchar("github", { length: 100 }),
-	LinkedIn:                   varchar("linkedin", { length: 100 }),
-	PersonalWebsite:            varchar("personal_website", { length: 100 }),
-	resume:                     varchar("resume", { length: 255 }).notNull()
-		                            .default("https://static.acmutsa.org/No%20Resume%20Provided.pdf"),
+	userID:             varchar     ("user_id",            {length:  32}) .primaryKey().references(() => (users.id)),
+    age:                integer     ("age"                              ) .notNull(),
+	gender:             gender      ("gender"                           ) .notNull(),
+	race:               race        ("race"                             ) .notNull(),
+	ethnicity:          ethnicity   ("ethnicity"                        ) .notNull(),
+	shortID:            varchar     ("short_id",           {length:  10}) ,
+	university:         varchar     ("university",         {length:  80}) .notNull(),
+	major:              varchar     ("major",              {length:  80}) .notNull(),
+	levelOfStudy:       studyLevel  ("level_of_study"                   ) .notNull(),
+	softwareExperience: experience  ("software_experience"              ) .notNull(),
+	hackathonsAttended: integer     ("hackathons_attended"              ) .notNull(),
+	shirtSize:          shirtSize   ("shirt_size"                       ) .notNull(),
+	dataShareable:      boolean     ("data_shareable"                   ) .notNull(),
+	emailable:          boolean     ("emailable"                        ) .notNull(),
+	GitHub:             varchar     ("github",             {length: 100}) ,
+	LinkedIn:           varchar     ("linkedin",           {length: 100}) ,
+	PersonalWebsite:    varchar     ("personal_website",   {length: 100}) ,
+	resume:             varchar     ("resume",             {length: 255}) ,
+	dietRestrictions:   json        ("diet_restrictions"                ) ,
+	accommodationNote:  text        ("accommodation_note"               ) ,
+	heardFrom:          heardFrom   ("heard_from"                       ) ,
 });
 
 export const profileData = pgTable("profile_data",
 {
-	hackerTag:       varchar("hacker_tag", { length: 50 }).notNull().primaryKey().unique(),
-	discordUsername: varchar("discord_username", { length: 60 }).notNull(),
-	pronouns:        varchar("pronouns", { length: 20 }).notNull(),
-	bio:             text("bio").notNull(),
-	skills:          json("skills").notNull(),
-	profilePhoto:    varchar("profile_photo", { length: 255 }).notNull(),
+	hackerTag:    varchar ("hacker_tag",    {length:  15}) .primaryKey().references(() => (users.hackerTag)),
+	discord:      varchar ("discord",       {length:  60}) ,
+	pronouns:     varchar ("pronouns",      {length:  20}) .notNull(),
+	bio:          text    ("bio"                         ) ,
+	skills:       json    ("skills"                      ) .notNull(),
+	profilePhoto: varchar ("profile_photo", {length: 255}) ,
 });
 
 export const events = pgTable("events",
 {
-	id:          bigserial("id", { mode: "number" }).notNull().primaryKey().unique(),
-	title:       varchar("name", { length: 255 }).notNull(),
-	startTime:   timestamp("start_time").notNull(),
-	endTime:     timestamp("end_time").notNull(),
-	description: text("description").notNull(),
-	type:        varchar("type", { length: 50 }).notNull(),
-	host:        varchar("host", { length: 255 }),
-	hidden:      boolean("hidden").notNull().default(false),
-});
-
-export const files = pgTable("files",
-{
-	id:           varchar("id", { length: 255 }).notNull().primaryKey().unique(),
-	presignedURL: text("presigned_url").notNull(),
-	key:          varchar("key", { length: 500 }).notNull().unique(),
-	validated:    boolean("validated").notNull().default(false),
-	type:         fileTypesEnum("type").notNull(),
-	ownerID:      varchar("owner_id", { length: 255 }).notNull(),
+	id:          serial    ("id"                       ) .primaryKey(),
+    title:       varchar   ("name",       {length: 255}) .notNull(),
+	startTime:   timestamp ("start_time"               ) .notNull(),
+	endTime:     timestamp ("end_time"                 ) .notNull(),
+    roomNum:     varchar   ("room_num",   {length:  10}) .notNull(),
+	description: text      ("description"              ) .notNull(),
+	type:        varchar   ("type",       {length:  50}) .notNull(),
+	host:        varchar   ("host",       {length: 255}) .notNull(),
+	hidden:      boolean   ("hidden"                   ) .notNull().default(false),
 });
 
 export const scans = pgTable("scans",
 	{
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		userID:    varchar("user_id", { length: 255 }).notNull(),
-		eventID:   integer("event_id").notNull(),
-		count:     integer("count").notNull(),
+		createdAt: timestamp ("created_at"              ) .notNull().defaultNow(),
+		userID:    varchar   ("user_id",   {length:  32}) .notNull().references(() => (users.id)),
+		eventID:   integer   ("event_id"                ) .notNull().references(() => (events.id)),
+		count:     integer   ("count"                   ) .notNull().default(1),
 	},
 	(table) => ({
 		id: primaryKey(table.userID, table.eventID),
@@ -125,21 +181,21 @@ export const scans = pgTable("scans",
 
 export const teams = pgTable("teams",
 {
-	id:        varchar("id", { length: 50 }).notNull().primaryKey().unique(),
-	name:      varchar("name", { length: 255 }).notNull(),
-	tag:       varchar("tag", { length: 50 }).notNull().unique(),
-	bio:       text("bio"),
-	photo:     varchar("photo", { length: 400 }).notNull(),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	ownerID:   varchar("owner_id", { length: 255 }).notNull(),
+	id:        varchar   ("id",        {length:  21}) .primaryKey(),
+	name:      varchar   ("name",      {length: 255}) .notNull(),
+	tag:       varchar   ("tag",       {length:  50}) .notNull().unique(),
+	bio:       text      ("bio"                     ) ,
+	photo:     varchar   ("photo",     {length: 400}) ,
+	createdAt: timestamp ("created_at"              ) .notNull().defaultNow(),
+	ownerID:   varchar   ("owner_id",  {length:  32}) .notNull().references(() => (users.id)),
 });
 
 export const invites = pgTable("invites",
 	{
-		inviteeID: varchar("invitee_id", { length: 255 }).notNull(),
-		teamID:    varchar("team_id", { length: 50 }).notNull(),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		status:    inviteType("status").notNull().default("pending"),
+		inviteeID: varchar    ("invitee_id", {length:  32}) .notNull().references(() => (users.id)),
+		teamID:    varchar    ("team_id",    {length:  21}) .notNull().references(() => (teams.id)),
+		createdAt: timestamp  ("created_at"               ) .notNull().defaultNow(),
+		status:    inviteType ("status"                   ) .notNull().default("pending"),
 	},
 	(table) => ({
 		id: primaryKey(table.inviteeID, table.teamID),
@@ -148,48 +204,49 @@ export const invites = pgTable("invites",
 
 export const submissions = pgTable("submissions",
 {
-    id:     varchar("id", {length: 50}).notNull().primaryKey().unique(),
-    teamID: varchar("team_id", {length: 50}).notNull().references(() => teams.id),
-    name:   varchar("name", {length: 255}).notNull(),
-    link:   varchar("link").notNull(),
-    time:   timestamp("time").notNull().defaultNow()
+    teamID: varchar   ("team_id", {length:  21}) .primaryKey().references(() => teams.id),
+    name:   varchar   ("name",    {length: 255}) .notNull(),
+    link:   varchar   ("link"                  ) .notNull(),
+    time:   timestamp ("time"                  ) .notNull().defaultNow()
 });
 
 export const tracks = pgTable("tracks",
 {
-    id:   integer("id").notNull().primaryKey().unique(),
-    name: varchar("name").notNull().unique()
-});
-
-export const criteria = pgTable("criteria",
-{
-    trackID: integer("track_id").notNull().references(() => tracks.id),
-    name:    varchar("name", {length: 20}).notNull().primaryKey().unique()
+    id:       serial  ("id"                  ) .primaryKey(),
+    name:     varchar ("name"                ) .notNull().unique(),
+    color:    varchar ("color",   {length: 6}) .notNull(),
+    criteria: json    ("criteria"            ) .notNull(),
 });
 
 export const trackSubmissions = pgTable("track_submissions",
-{
-    id:           integer("id").notNull().primaryKey().unique(),
-    trackID:      integer("track_id").notNull().references(() => tracks.id),
-    submissionID: varchar("submission_id").notNull().references(() => submissions.id)
-});
+    {
+        trackID:      integer ("track_id"                   ) .notNull().references(() => tracks.id),
+        submissionID: varchar ("submission_id", {length: 21}) .notNull().references(() => submissions.teamID)
+    },
+    (table) => ({
+        id: primaryKey(table.trackID, table.submissionID),
+    })
+);
 
 export const interviews = pgTable("interviews",
-{
-    id:           integer("id").notNull().primaryKey().unique(),
-	judgeID:      varchar("judge_id", { length: 255 }).notNull().references(() => users.clerkID),
-    submissionID: varchar("submission_id", {length: 50}).notNull().references(() => submissions.id),
-    table:        integer("table").notNull(),
-    complete:     boolean("complete").notNull().default(false)
-});
+    {
+    	judgeID:      varchar ("judge_id",      {length: 32}) .notNull().references(() => users.id),
+        submissionID: varchar ("submission_id", {length: 21}) .notNull().references(() => submissions.teamID),
+        table:        integer ("table"                      ) .notNull(),
+        grade:        json    ("grade"                      ) ,
+    },
+    (table) => ({
+        id: primaryKey(table.judgeID, table.submissionID),
+    })
+);
 
 export const errorLog = pgTable("error_log",
 {
-	id:        varchar("id", { length: 50 }).notNull().primaryKey(),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	userID:    varchar("user_id", { length: 255 }).references(() => users.clerkID),
-	route:     varchar("route", { length: 255 }),
-	message:   text("message").notNull(),
+	id:        serial    ("id"                      ) .primaryKey(),
+	createdAt: timestamp ("created_at"              ) .notNull().defaultNow(),
+	userID:    varchar   ("user_id",   {length:  32}) .references(() => users.id),
+	route:     varchar   ("route",     {length: 100}) ,
+	message:   text      ("message"                 ) .notNull(),
 });
 
 export const submissionsLog = pgTable("submissions_log",
@@ -201,14 +258,13 @@ export const submissionsLog = pgTable("submissions_log",
 
 export const userRelations = relations(users, ({ one, many }) => ({
 	registrationData: one(registrationData, {
-		fields: [users.clerkID],
-		references: [registrationData.clerkID],
+		fields: [users.id],
+		references: [registrationData.userID],
 	}),
 	profileData: one(profileData, {
 		fields: [users.hackerTag],
 		references: [profileData.hackerTag],
 	}),
-	files: many(files),
 	scans: many(scans),
 	team: one(teams, {
 		fields: [users.teamID],
@@ -221,17 +277,10 @@ export const eventsRelations = relations(events, ({ many }) => ({
 	scans: many(scans),
 }));
 
-export const filesRelations = relations(files, ({ one }) => ({
-	owner: one(users, {
-		fields: [files.ownerID],
-		references: [users.clerkID],
-	}),
-}));
-
 export const scansRelations = relations(scans, ({ one }) => ({
 	user: one(users, {
 		fields: [scans.userID],
-		references: [users.clerkID],
+		references: [users.id],
 	}),
 	event: one(events, {
 		fields: [scans.eventID],
@@ -250,19 +299,13 @@ export const submissionRelations = relations(submissions, ({ one, many }) => ({
         references: [teams.id]
     }),
     tracks: many(trackSubmissions),
-    // interviews: many(interviews),
     interviews: one(interviews, {
-        fields: [submissions.id],
+        fields: [submissions.teamID],
         references: [interviews.submissionID]
     }),
 }));
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
-    // criteria: many(criteria),
-    criteria: one(criteria, {
-        fields: [tracks.id],
-        references: [criteria.trackID]
-    }),
     submissions: many(trackSubmissions)
 }));
 
@@ -273,14 +316,14 @@ export const trackSubmissionsRelations = relations(trackSubmissions, ({ one }) =
     }),
     submission: one(submissions, {
 		fields: [trackSubmissions.submissionID],
-		references: [submissions.id]
+		references: [submissions.teamID]
     })
 }));
 
 export const invitesRelations = relations(invites, ({ one }) => ({
 	invitee: one(users, {
 		fields: [invites.inviteeID],
-		references: [users.clerkID],
+		references: [users.id],
 	}),
 	team: one(teams, {
 		fields: [invites.teamID],
