@@ -82,6 +82,16 @@ export const heardFrom = pgEnum("heard_from",
     "Other",
 ]);
 
+export const shirtSizes = pgEnum("shirt_size",
+[
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL",
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -122,7 +132,7 @@ export const registrationData = pgTable("registration_data",
 	levelOfStudy:       studyLevels ("level_of_study"                    ) .notNull(),
 	softwareExperience: experiences ("software_experience"               ) .notNull(),
 	hackathonsAttended: integer     ("hackathons_attended"               ) .notNull(),
-	shirtSize:          varchar     ("shirt_size",          {length:   5}) .notNull(),
+	shirtSize:          shirtSizes  ("shirt_size"                        ) .notNull(),
 	dataShareable:      boolean     ("data_shareable"                    ) .notNull(),
 	emailable:          boolean     ("emailable"                         ) .notNull(),
 	GitHub:             varchar     ("github",              {length: 100}) ,
