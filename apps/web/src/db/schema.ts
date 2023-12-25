@@ -29,7 +29,7 @@ export const inviteType = pgEnum("status",
     "declined",
 ]);
 
-export const genders = pgEnum("gender",
+export const gender = pgEnum("gender",
 [
     "Male",
     "Female",
@@ -38,7 +38,7 @@ export const genders = pgEnum("gender",
     "Prefer not to say"
 ]);
 
-export const races = pgEnum("race",
+export const race = pgEnum("race",
 [
     "Native American",
     "Asian / Pacific Islander",
@@ -48,13 +48,13 @@ export const races = pgEnum("race",
     "Prefer not to say",
 ]);
 
-export const ethnicities  = pgEnum("ethnicity",
+export const ethnicity  = pgEnum("ethnicity",
 [
     "Hispanic or Latino",
     "Not Hispanic or Latino",
 ]);
 
-export const studyLevels = pgEnum("level_of_study",
+export const studyLevel = pgEnum("level_of_study",
 [
     "Freshman",
     "Sophomore",
@@ -64,7 +64,7 @@ export const studyLevels = pgEnum("level_of_study",
     "Other,"
 ]);
 
-export const experiences = pgEnum("software_experience",
+export const experience = pgEnum("software_experience",
 [
     "Beginner",
     "Intermediate",
@@ -82,7 +82,7 @@ export const heardFrom = pgEnum("heard_from",
     "Other",
 ]);
 
-export const shirtSizes = pgEnum("shirt_size",
+export const shirtSize = pgEnum("shirt_size",
 [
     "S",
     "M",
@@ -92,7 +92,7 @@ export const shirtSizes = pgEnum("shirt_size",
     "3XL",
 ]);
 
-export const roles = pgEnum("role",
+export const role = pgEnum("role",
 [
 	"hacker",
 	"volunteer",
@@ -108,7 +108,7 @@ export const users = pgTable("users",
 	id:                   varchar   ("id",                   {length:  32}) .primaryKey(),
 	firstName:            varchar   ("first_name",           {length:  50}) .notNull(),
 	lastName:             varchar   ("last_name",            {length:  50}) .notNull(),
-	role:                 roles     ("role"                               ) .notNull().default("hacker"),
+	role:                 role      ("role"                               ) .notNull().default("hacker"),
 	hackerTag:            varchar   ("hacker_tag",           {length:  15}) .notNull().unique(),
 	email:                varchar   ("email",                {length: 255}) .notNull().unique(),
 	teamID:               varchar   ("team_id",              {length:  21}) ,
@@ -123,16 +123,16 @@ export const registrationData = pgTable("registration_data",
 {
 	userID:             varchar     ("user_id",             {length:  32}) .primaryKey().references(() => (users.id)),
     age:                integer     ("age"                               ) .notNull(),
-	gender:             genders     ("gender"                            ) .notNull(),
-	race:               races       ("race"                              ) .notNull(),
-	ethnicity:          ethnicities ("ethnicity"                         ) .notNull(),
+	gender:             gender      ("gender"                            ) .notNull(),
+	race:               race        ("race"                              ) .notNull(),
+	ethnicity:          ethnicity   ("ethnicity"                         ) .notNull(),
 	shortID:            varchar     ("short_id",            {length:  10}) ,
 	university:         varchar     ("university",          {length:  80}) .notNull(),
 	major:              varchar     ("major",               {length:  80}) .notNull(),
-	levelOfStudy:       studyLevels ("level_of_study"                    ) .notNull(),
-	softwareExperience: experiences ("software_experience"               ) .notNull(),
+	levelOfStudy:       studyLevel  ("level_of_study"                    ) .notNull(),
+	softwareExperience: experience  ("software_experience"               ) .notNull(),
 	hackathonsAttended: integer     ("hackathons_attended"               ) .notNull(),
-	shirtSize:          shirtSizes  ("shirt_size"                        ) .notNull(),
+	shirtSize:          shirtSize   ("shirt_size"                        ) .notNull(),
 	dataShareable:      boolean     ("data_shareable"                    ) .notNull(),
 	emailable:          boolean     ("emailable"                         ) .notNull(),
 	GitHub:             varchar     ("github",              {length: 100}) ,
