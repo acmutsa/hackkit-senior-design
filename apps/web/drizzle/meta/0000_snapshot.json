@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "d2fb0e4c-1c3d-457b-a540-c2867d846e1c",
+  "id": "a4358b1d-b761-4eaf-b3d4-d8ac8f4ec234",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "error_log": {
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(50)",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -23,13 +23,13 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(255)",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": false
         },
         "route": {
           "name": "route",
-          "type": "varchar(255)",
+          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": false
         },
@@ -41,7 +41,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "error_log_user_id_users_id_fk": {
+          "name": "error_log_user_id_users_id_fk",
+          "tableFrom": "error_log",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -51,7 +65,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigserial",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -73,6 +87,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "room_num": {
+          "name": "room_num",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -89,7 +109,7 @@
           "name": "host",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "hidden": {
           "name": "hidden",
@@ -102,77 +122,76 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "events_id_unique": {
-          "name": "events_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
-    "files": {
-      "name": "files",
+    "interviews": {
+      "name": "interviews",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "presigned_url": {
-          "name": "presigned_url",
-          "type": "text",
+        "judge_id": {
+          "name": "judge_id",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
         },
-        "key": {
-          "name": "key",
-          "type": "varchar(500)",
+        "submission_id": {
+          "name": "submission_id",
+          "type": "varchar(21)",
           "primaryKey": false,
           "notNull": true
         },
-        "validated": {
-          "name": "validated",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "type": {
-          "name": "type",
-          "type": "type",
+        "table": {
+          "name": "table",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "varchar(255)",
+        "grade": {
+          "name": "grade",
+          "type": "json",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "files_id_unique": {
-          "name": "files_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
+      "foreignKeys": {
+        "interviews_judge_id_users_id_fk": {
+          "name": "interviews_judge_id_users_id_fk",
+          "tableFrom": "interviews",
+          "tableTo": "users",
+          "columnsFrom": [
+            "judge_id"
+          ],
+          "columnsTo": [
             "id"
-          ]
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
-        "files_key_unique": {
-          "name": "files_key_unique",
-          "nullsNotDistinct": false,
+        "interviews_submission_id_submissions_team_id_fk": {
+          "name": "interviews_submission_id_submissions_team_id_fk",
+          "tableFrom": "interviews",
+          "tableTo": "submissions",
+          "columnsFrom": [
+            "submission_id"
+          ],
+          "columnsTo": [
+            "team_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "interviews_judge_id_submission_id": {
+          "name": "interviews_judge_id_submission_id",
           "columns": [
-            "key"
+            "judge_id",
+            "submission_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "invites": {
       "name": "invites",
@@ -180,13 +199,13 @@
       "columns": {
         "invitee_id": {
           "name": "invitee_id",
-          "type": "varchar(255)",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
         },
         "team_id": {
           "name": "team_id",
-          "type": "varchar(50)",
+          "type": "varchar(21)",
           "primaryKey": false,
           "notNull": true
         },
@@ -206,7 +225,34 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "invites_invitee_id_users_id_fk": {
+          "name": "invites_invitee_id_users_id_fk",
+          "tableFrom": "invites",
+          "tableTo": "users",
+          "columnsFrom": [
+            "invitee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "invites_team_id_teams_id_fk": {
+          "name": "invites_team_id_teams_id_fk",
+          "tableFrom": "invites",
+          "tableTo": "teams",
+          "columnsFrom": [
+            "team_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "invites_invitee_id_team_id": {
           "name": "invites_invitee_id_team_id",
@@ -224,15 +270,15 @@
       "columns": {
         "hacker_tag": {
           "name": "hacker_tag",
-          "type": "varchar(50)",
+          "type": "varchar(15)",
           "primaryKey": true,
           "notNull": true
         },
-        "discord_username": {
-          "name": "discord_username",
+        "discord": {
+          "name": "discord",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "pronouns": {
           "name": "pronouns",
@@ -244,7 +290,7 @@
           "name": "bio",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "skills": {
           "name": "skills",
@@ -256,29 +302,35 @@
           "name": "profile_photo",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "profile_data_hacker_tag_unique": {
-          "name": "profile_data_hacker_tag_unique",
-          "nullsNotDistinct": false,
-          "columns": [
+      "foreignKeys": {
+        "profile_data_hacker_tag_users_hacker_tag_fk": {
+          "name": "profile_data_hacker_tag_users_hacker_tag_fk",
+          "tableFrom": "profile_data",
+          "tableTo": "users",
+          "columnsFrom": [
             "hacker_tag"
-          ]
+          ],
+          "columnsTo": [
+            "hacker_tag"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
-      }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "registration_data": {
       "name": "registration_data",
       "schema": "",
       "columns": {
-        "clerk_id": {
-          "name": "clerk_id",
-          "type": "varchar(255)",
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(32)",
           "primaryKey": true,
           "notNull": true
         },
@@ -290,61 +342,49 @@
         },
         "gender": {
           "name": "gender",
-          "type": "varchar(50)",
+          "type": "gender",
           "primaryKey": false,
           "notNull": true
         },
         "race": {
           "name": "race",
-          "type": "varchar(75)",
+          "type": "race",
           "primaryKey": false,
           "notNull": true
         },
         "ethnicity": {
           "name": "ethnicity",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "accepted_mlh_code_of_conduct": {
-          "name": "accepted_mlh_code_of_conduct",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "shared_data_with_mlh": {
-          "name": "shared_data_with_mlh",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "wants_to_receive_mlh_emails": {
-          "name": "wants_to_receive_mlh_emails",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "university": {
-          "name": "university",
-          "type": "varchar(200)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "major": {
-          "name": "major",
-          "type": "varchar(200)",
+          "type": "ethnicity",
           "primaryKey": false,
           "notNull": true
         },
         "short_id": {
           "name": "short_id",
-          "type": "varchar(50)",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "university": {
+          "name": "university",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "major": {
+          "name": "major",
+          "type": "varchar(80)",
           "primaryKey": false,
           "notNull": true
         },
         "level_of_study": {
           "name": "level_of_study",
-          "type": "varchar(50)",
+          "type": "level_of_study",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "software_experience": {
+          "name": "software_experience",
+          "type": "software_experience",
           "primaryKey": false,
           "notNull": true
         },
@@ -354,35 +394,23 @@
           "primaryKey": false,
           "notNull": true
         },
-        "software_experience": {
-          "name": "software_experience",
-          "type": "varchar(25)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "heard_from": {
-          "name": "heard_from",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        },
         "shirt_size": {
           "name": "shirt_size",
-          "type": "varchar(5)",
+          "type": "shirt_size",
           "primaryKey": false,
           "notNull": true
         },
-        "diet_restrictions": {
-          "name": "diet_restrictions",
-          "type": "json",
+        "data_shareable": {
+          "name": "data_shareable",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },
-        "accommodation_note": {
-          "name": "accommodation_note",
-          "type": "text",
+        "emailable": {
+          "name": "emailable",
+          "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "github": {
           "name": "github",
@@ -406,22 +434,45 @@
           "name": "resume",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'https://static.acmutsa.org/No%20Resume%20Provided.pdf'"
+          "notNull": false
+        },
+        "diet_restrictions": {
+          "name": "diet_restrictions",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "accommodation_note": {
+          "name": "accommodation_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heard_from": {
+          "name": "heard_from",
+          "type": "heard_from",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "registration_data_clerk_id_unique": {
-          "name": "registration_data_clerk_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "clerk_id"
-          ]
+      "foreignKeys": {
+        "registration_data_user_id_users_id_fk": {
+          "name": "registration_data_user_id_users_id_fk",
+          "tableFrom": "registration_data",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
-      }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "scans": {
       "name": "scans",
@@ -436,7 +487,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(255)",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
         },
@@ -450,11 +501,39 @@
           "name": "count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": 1
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "scans_user_id_users_id_fk": {
+          "name": "scans_user_id_users_id_fk",
+          "tableFrom": "scans",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "scans_event_id_events_id_fk": {
+          "name": "scans_event_id_events_id_fk",
+          "tableFrom": "scans",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "scans_user_id_event_id": {
           "name": "scans_user_id_event_id",
@@ -466,13 +545,62 @@
       },
       "uniqueConstraints": {}
     },
+    "submissions": {
+      "name": "submissions",
+      "schema": "",
+      "columns": {
+        "team_id": {
+          "name": "team_id",
+          "type": "varchar(21)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "link": {
+          "name": "link",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time": {
+          "name": "time",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "submissions_team_id_teams_id_fk": {
+          "name": "submissions_team_id_teams_id_fk",
+          "tableFrom": "submissions",
+          "tableTo": "teams",
+          "columnsFrom": [
+            "team_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "teams": {
       "name": "teams",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(50)",
+          "type": "varchar(21)",
           "primaryKey": true,
           "notNull": true
         },
@@ -498,7 +626,7 @@
           "name": "photo",
           "type": "varchar(400)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -509,28 +637,29 @@
         },
         "owner_id": {
           "name": "owner_id",
-          "type": "varchar(255)",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
-        },
-        "devpost_url": {
-          "name": "devpost_url",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "teams_owner_id_users_id_fk": {
+          "name": "teams_owner_id_users_id_fk",
+          "tableFrom": "teams",
+          "tableTo": "users",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "teams_id_unique": {
-          "name": "teams_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        },
         "teams_tag_unique": {
           "name": "teams_tag_unique",
           "nullsNotDistinct": false,
@@ -540,13 +669,112 @@
         }
       }
     },
+    "track_submissions": {
+      "name": "track_submissions",
+      "schema": "",
+      "columns": {
+        "track_id": {
+          "name": "track_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "submission_id": {
+          "name": "submission_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "track_submissions_track_id_tracks_id_fk": {
+          "name": "track_submissions_track_id_tracks_id_fk",
+          "tableFrom": "track_submissions",
+          "tableTo": "tracks",
+          "columnsFrom": [
+            "track_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "track_submissions_submission_id_submissions_team_id_fk": {
+          "name": "track_submissions_submission_id_submissions_team_id_fk",
+          "tableFrom": "track_submissions",
+          "tableTo": "submissions",
+          "columnsFrom": [
+            "submission_id"
+          ],
+          "columnsTo": [
+            "team_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "track_submissions_track_id_submission_id": {
+          "name": "track_submissions_track_id_submission_id",
+          "columns": [
+            "track_id",
+            "submission_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "tracks": {
+      "name": "tracks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "color": {
+          "name": "color",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "criteria": {
+          "name": "criteria",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tracks_name_unique": {
+          "name": "tracks_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
     "users": {
       "name": "users",
       "schema": "",
       "columns": {
-        "clerk_id": {
-          "name": "clerk_id",
-          "type": "varchar(255)",
+        "id": {
+          "name": "id",
+          "type": "varchar(32)",
           "primaryKey": true,
           "notNull": true
         },
@@ -562,15 +790,34 @@
           "primaryKey": false,
           "notNull": true
         },
+        "role": {
+          "name": "role",
+          "type": "role",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Hacker'"
+        },
+        "hacker_tag": {
+          "name": "hacker_tag",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "email": {
           "name": "email",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "hacker_tag": {
-          "name": "hacker_tag",
-          "type": "varchar(50)",
+        "team_id": {
+          "name": "team_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "group": {
+          "name": "group",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -581,6 +828,13 @@
           "notNull": true,
           "default": false
         },
+        "profile_searchable": {
+          "name": "profile_searchable",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -588,35 +842,9 @@
           "notNull": true,
           "default": "now()"
         },
-        "has_searchable_profile": {
-          "name": "has_searchable_profile",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
-        },
-        "group": {
-          "name": "group",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "role",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'hacker'"
-        },
-        "checkin_timestamp": {
-          "name": "checkin_timestamp",
+        "check_in_time": {
+          "name": "check_in_time",
           "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         }
@@ -625,11 +853,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_clerk_id_unique": {
-          "name": "users_clerk_id_unique",
+        "users_hacker_tag_unique": {
+          "name": "users_hacker_tag_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "clerk_id"
+            "hacker_tag"
           ]
         },
         "users_email_unique": {
@@ -638,23 +866,46 @@
           "columns": [
             "email"
           ]
-        },
-        "users_hacker_tag_unique": {
-          "name": "users_hacker_tag_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "hacker_tag"
-          ]
         }
       }
     }
   },
   "enums": {
-    "type": {
-      "name": "type",
+    "ethnicity": {
+      "name": "ethnicity",
       "values": {
-        "generic": "generic",
-        "resume": "resume"
+        "Hispanic or Latino": "Hispanic or Latino",
+        "Not Hispanic or Latino": "Not Hispanic or Latino"
+      }
+    },
+    "software_experience": {
+      "name": "software_experience",
+      "values": {
+        "Beginner": "Beginner",
+        "Intermediate": "Intermediate",
+        "Advanced": "Advanced",
+        "Expert": "Expert"
+      }
+    },
+    "gender": {
+      "name": "gender",
+      "values": {
+        "Male": "Male",
+        "Female": "Female",
+        "Non-binary": "Non-binary",
+        "Other": "Other",
+        "Prefer not to say": "Prefer not to say"
+      }
+    },
+    "heard_from": {
+      "name": "heard_from",
+      "values": {
+        "Instagram": "Instagram",
+        "Class Presentation": "Class Presentation",
+        "Twitter": "Twitter",
+        "Event Site": "Event Site",
+        "Friend": "Friend",
+        "Other": "Other"
       }
     },
     "status": {
@@ -665,15 +916,48 @@
         "declined": "declined"
       }
     },
+    "race": {
+      "name": "race",
+      "values": {
+        "Native American": "Native American",
+        "Asian / Pacific Islander": "Asian / Pacific Islander",
+        "Black / African American": "Black / African American",
+        "White / Caucasian": "White / Caucasian",
+        "Multiple / Other": "Multiple / Other",
+        "Prefer not to say": "Prefer not to say"
+      }
+    },
     "role": {
       "name": "role",
       "values": {
-        "hacker": "hacker",
-        "volunteer": "volunteer",
-        "mentor": "mentor",
-        "mlh": "mlh",
-        "admin": "admin",
-        "super_admin": "super_admin"
+        "Hacker": "Hacker",
+        "Volunteer": "Volunteer",
+        "Mentor": "Mentor",
+        "MLH": "MLH",
+        "Admin": "Admin",
+        "Super Admin": "Super Admin"
+      }
+    },
+    "shirt_size": {
+      "name": "shirt_size",
+      "values": {
+        "S": "S",
+        "M": "M",
+        "L": "L",
+        "XL": "XL",
+        "2XL": "2XL",
+        "3XL": "3XL"
+      }
+    },
+    "level_of_study": {
+      "name": "level_of_study",
+      "values": {
+        "Freshman": "Freshman",
+        "Sophomore": "Sophomore",
+        "Junior": "Junior",
+        "Senior": "Senior",
+        "Recent Grad": "Recent Grad",
+        "Other,": "Other,"
       }
     }
   },
