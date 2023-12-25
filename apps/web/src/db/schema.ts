@@ -22,8 +22,22 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-export const inviteType = pgEnum("status", ["pending", "accepted", "declined"]);
-export const genders = pgEnum("gender", ["Male", "Female", "Non-binary", "Other", "Prefer not to say"])
+export const inviteType = pgEnum("status",
+[
+    "pending",
+    "accepted",
+    "declined",
+]);
+
+export const genders = pgEnum("gender",
+[
+    "Male",
+    "Female",
+    "Non-binary",
+    "Other",
+    "Prefer not to say"
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
