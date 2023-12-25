@@ -47,7 +47,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "level_of_study" AS ENUM('Freshman', 'Sophomore', 'Junior', 'Senior', 'Recent Grad', 'Other,');
+ CREATE TYPE "level_of_study" AS ENUM('Freshman', 'Sophomore', 'Junior', 'Senior', 'Recent Grad', 'Other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

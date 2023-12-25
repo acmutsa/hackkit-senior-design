@@ -61,7 +61,7 @@ export const studyLevel = pgEnum("level_of_study",
     "Junior",
     "Senior",
     "Recent Grad",
-    "Other,"
+    "Other",
 ]);
 
 export const experience = pgEnum("software_experience",
