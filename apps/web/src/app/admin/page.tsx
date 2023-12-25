@@ -50,7 +50,7 @@ export default async function Page() {
 	const getInterviews = await db
 		.select()
 		.from(submissions)
-		.leftJoin(interviews, eq(submissions.id, interviews.submissionID));
+		.leftJoin(interviews, eq(submissions.teamID, interviews.submissionID));
 
 	/* Variables from original file */
 	const totalTeamCount = allTeams.length;
@@ -64,12 +64,12 @@ export default async function Page() {
 		team:           teamSub.teams!.name,
 		name:           teamSub.submissions?.name ?? "---",
 		link:           teamSub.submissions?.link ?? "",
-		track:          getTrack.find((track) => track.track_submissions?.submissionID === teamSub.submissions?.id)?.tracks.name ?? "---",
-		table:          getInterviews.find((interview) => interview.submissions.id === teamSub.submissions?.id)?.interviews?.table ?? -1,
+		track:          getTrack.find((track) => track.track_submissions?.submissionID === teamSub.submissions?.teamID)?.tracks.name ?? "---",
+		table:          getInterviews.find((interview) => interview.submissions.teamID === teamSub.submissions?.teamID)?.interviews?.table ?? -1,
 		submissionTime: teamSub.submissions?.time.toDateString() || "",
 		done:           0,
 		total:          0,
-		subID:          teamSub.submissions?.id ?? "",
+		subID:          teamSub.submissions?.teamID ?? "",
 	}});
 
 	/* Sort projects to show unsubmitted last */
@@ -92,7 +92,7 @@ export default async function Page() {
     /* Calculating the percentage of judging completed */
 	var doneInterviews: number = 0;
 	allInterviews.map((interview) => {
-		if (interview.complete) { doneInterviews++; }
+		if (interview.grade) { doneInterviews++; }
 	});
 	var completionPerc: number = 0;
 	allInterviews.length == 0 ?
