@@ -213,9 +213,10 @@ export const submissions = pgTable("submissions",
 
 export const tracks = pgTable("tracks",
 {
-    id:       integer ("id"      ) .primaryKey(),
-    name:     varchar ("name"    ) .notNull().unique(),
-    criteria: json    ("criteria") .notNull(),
+    id:       integer ("id"                  ) .primaryKey(),
+    name:     varchar ("name"                ) .notNull().unique(),
+    color:    varchar ("color",   {length: 6}) .notNull(),
+    criteria: json    ("criteria"            ) .notNull(),
 });
 
 export const trackSubmissions = pgTable("track_submissions",
