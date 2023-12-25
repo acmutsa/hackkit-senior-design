@@ -54,6 +54,16 @@ export const ethnicities  = pgEnum("ethnicity",
     "Not Hispanic or Latino",
 ]);
 
+export const studyLevels = pgEnum("level_of_study",
+[
+    "Freshman",
+    "Sophomore",
+    "Junior",
+    "Senior",
+    "Recent Grad",
+    "Other,"
+]);
+
 export const roles = pgEnum("role",
 [
 	"hacker",
@@ -91,7 +101,7 @@ export const registrationData = pgTable("registration_data",
 	shortID:            varchar     ("short_id",            {length:  10}) ,
 	university:         varchar     ("university",          {length:  80}) .notNull(),
 	major:              varchar     ("major",               {length:  80}) .notNull(),
-	levelOfStudy:       varchar     ("level_of_study",      {length:  20}) .notNull(),
+	levelOfStudy:       studyLevels ("level_of_study"                    ) .notNull(),
 	softwareExperience: varchar     ("software_experience", {length:  15}) .notNull(),
 	hackathonsAttended: integer     ("hackathons_attended"               ) .notNull(),
 	shirtSize:          varchar     ("shirt_size",          {length:   5}) .notNull(),
