@@ -22,7 +22,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-export const fileTypesEnum = pgEnum("type", ["generic", "resume"]);
 export const inviteType = pgEnum("status", ["pending", "accepted", "declined"]);
 export const roles = pgEnum("role",
 [
