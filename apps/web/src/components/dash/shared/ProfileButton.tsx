@@ -31,7 +31,7 @@ export default async function ProfileButton() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="relative h-8 w-8 rounded-full">
 					<Avatar className="h-8 w-8">
-						<AvatarImage src={user.profileData.profilePhoto} alt="@shadcn" />
+						<AvatarImage src={user.profileData.profilePhoto || ""} alt="@shadcn" />
 						<AvatarFallback>{user.firstName.charAt(0) + user.lastName.charAt(0)}</AvatarFallback>
 					</Avatar>
 				</Button>

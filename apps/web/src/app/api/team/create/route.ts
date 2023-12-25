@@ -53,14 +53,14 @@ export async function POST(req: Request) {
 			message: body.data.tag,
 		});
 	} catch (e) {
-		const errorID = await logError({
+		await logError({
 			error: e,
 			userID: userId,
 			route: "/api/team/create",
 		});
 		return NextResponse.json({
 			success: false,
-			message: `An error occurred while creating your team. If this is a continuing issue, please reach out to ${c.issueEmail} with error ID ${errorID}.`,
+			message: `An error occurred while creating your team. If this is a continuing issue, please reach out to ${c.issueEmail}.`,
 		});
 	}
 }

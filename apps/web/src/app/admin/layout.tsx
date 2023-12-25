@@ -27,7 +27,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 		where: eq(users.id, userId),
 	});
 
-	if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
+	if (!user || (user.role !== "Admin" && user.role !== "Super Admin")) {
 		return (
 			<FullScreenMessage
 				title="Access Denied"
