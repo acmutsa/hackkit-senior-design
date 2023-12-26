@@ -21,7 +21,7 @@ export default async function ProfileButton() {
 	const { userId } = await auth();
 	if (!userId) return null;
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 		with: { profileData: true },
 	});
 	if (!user) return null;
@@ -31,7 +31,7 @@ export default async function ProfileButton() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="relative h-8 w-8 rounded-full">
 					<Avatar className="h-8 w-8">
-						<AvatarImage src={user.profileData.profilePhoto} alt="@shadcn" />
+						<AvatarImage src={user.profileData.profilePhoto || ""} alt="@shadcn" />
 						<AvatarFallback>{user.firstName.charAt(0) + user.lastName.charAt(0)}</AvatarFallback>
 					</Avatar>
 				</Button>

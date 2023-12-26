@@ -20,7 +20,7 @@ export default async function Page() {
 	if (!user) return null;
 
 	const userDbRecord = await db.query.users.findFirst({
-		where: eq(users.clerkID, user.id),
+		where: eq(users.id, user.id),
 	});
 
 	if (!userDbRecord) return null;

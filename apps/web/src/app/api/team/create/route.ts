@@ -11,7 +11,7 @@ import { logError } from "@/lib/utils/server/logError";
 export async function POST(req: Request) {
 	const { userId } = await auth();
 	if (!userId) return new Response("Unauthorized", { status: 401 });
-	const user = await db.query.users.findFirst({ where: eq(users.clerkID, userId) });
+	const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
 	if (!user) return new Response("Unauthorized", { status: 401 });
 	if (user.teamID) {
 		return NextResponse.json({
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 				.set({
 					teamID,
 				})
-				.where(eq(users.clerkID, userId));
+				.where(eq(users.id, userId));
 		});
 
 		return NextResponse.json({
@@ -53,14 +53,14 @@ export async function POST(req: Request) {
 			message: body.data.tag,
 		});
 	} catch (e) {
-		const errorID = await logError({
+		await logError({
 			error: e,
 			userID: userId,
 			route: "/api/team/create",
 		});
 		return NextResponse.json({
 			success: false,
-			message: `An error occurred while creating your team. If this is a continuing issue, please reach out to ${c.issueEmail} with error ID ${errorID}.`,
+			message: `An error occurred while creating your team. If this is a continuing issue, please reach out to ${c.issueEmail}.`,
 		});
 	}
 }

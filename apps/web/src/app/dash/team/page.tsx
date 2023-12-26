@@ -18,7 +18,7 @@ export default async function Page() {
 
 	// TODO: make this db query not so bad
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.id, userId),
 		with: {
 			invites: {
 				with: {
@@ -116,7 +116,7 @@ export default async function Page() {
 							<Image
 								className="object-cover object-center"
 								fill
-								src={team.photo}
+								src={team.photo || ""}
 								alt={`Team Photo for ${team.name}`}
 							/>
 						</div>
@@ -141,7 +141,7 @@ export default async function Page() {
 									<div className="h-full w-full flex items-center justify-center">
 										<div className="bg-zinc-900 hover:bg-muted hover:border-muted-foreground transition-colors duration-150 border-muted border-2 rounded flex gap-x-2 p-2 items-center justify-center h-[75px] w-[200px]">
 											<Image
-												src={member.profileData.profilePhoto}
+												src={member.profileData.profilePhoto || ""}
 												alt={`${member.hackerTag}'s Profile Photo`}
 												height={40}
 												width={40}

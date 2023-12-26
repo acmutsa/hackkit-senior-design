@@ -61,7 +61,7 @@ export const studyLevel = pgEnum("level_of_study",
     "Junior",
     "Senior",
     "Recent Grad",
-    "Other,"
+    "Other",
 ]);
 
 export const experience = pgEnum("software_experience",
@@ -95,6 +95,7 @@ export const shirtSize = pgEnum("shirt_size",
 export const role = pgEnum("role",
 [
 	"Hacker",
+    "Judge",
 	"Volunteer",
 	"Mentor",
 	"MLH",
@@ -114,6 +115,7 @@ export const users = pgTable("users",
 	teamID:               varchar   ("team_id",              {length:  21}) ,
 	group:                integer   ("group"                              ) .notNull(),
 	registrationComplete: boolean   ("registration_complete"              ) .notNull().default(false),
+    acceptedMLHConduct:   boolean   ("accepted_mlh_conduct"               ) .notNull().default(true),
 	profileSearchable:    boolean   ("profile_searchable"                 ) .notNull().default(true),
 	createdAt:            timestamp ("created_at"                         ) .notNull().defaultNow(),
 	checkInTime:          timestamp ("check_in_time"                      ) ,
@@ -214,7 +216,7 @@ export const tracks = pgTable("tracks",
 {
     id:       serial  ("id"                  ) .primaryKey(),
     name:     varchar ("name"                ) .notNull().unique(),
-    color:    varchar ("color",   {length: 6}) .notNull(),
+    color:    varchar ("color",   {length: 7}) .notNull(),
     criteria: json    ("criteria"            ) .notNull(),
 });
 
