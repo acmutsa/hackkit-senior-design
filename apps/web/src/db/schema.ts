@@ -215,7 +215,7 @@ export const tracks = pgTable("tracks",
 {
     id:       serial  ("id"                  ) .primaryKey(),
     name:     varchar ("name"                ) .notNull().unique(),
-    color:    varchar ("color",   {length: 6}) .notNull(),
+    color:    varchar ("color",   {length: 7}) .notNull(),
     criteria: json    ("criteria"            ) .notNull(),
 });
 

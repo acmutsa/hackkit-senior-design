@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS "track_submissions" (
 CREATE TABLE IF NOT EXISTS "tracks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar NOT NULL,
-	"color" varchar(6) NOT NULL,
+	"color" varchar(7) NOT NULL,
 	"criteria" json NOT NULL,
 	CONSTRAINT "tracks_name_unique" UNIQUE("name")
 );
