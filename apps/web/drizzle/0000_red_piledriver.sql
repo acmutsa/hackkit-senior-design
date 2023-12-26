@@ -171,6 +171,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"team_id" varchar(21),
 	"group" integer NOT NULL,
 	"registration_complete" boolean DEFAULT false NOT NULL,
+	"accepted_mlh_conduct" boolean DEFAULT true NOT NULL,
 	"profile_searchable" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"check_in_time" timestamp,
