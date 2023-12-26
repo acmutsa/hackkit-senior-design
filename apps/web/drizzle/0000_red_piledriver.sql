@@ -35,7 +35,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "role" AS ENUM('Hacker', 'Volunteer', 'Mentor', 'MLH', 'Admin', 'Super Admin');
+ CREATE TYPE "role" AS ENUM('Hacker', 'Judge', 'Volunteer', 'Mentor', 'MLH', 'Admin', 'Super Admin');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -47,7 +47,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "level_of_study" AS ENUM('Freshman', 'Sophomore', 'Junior', 'Senior', 'Recent Grad', 'Other,');
+ CREATE TYPE "level_of_study" AS ENUM('Freshman', 'Sophomore', 'Junior', 'Senior', 'Recent Grad', 'Other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS "track_submissions" (
 CREATE TABLE IF NOT EXISTS "tracks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar NOT NULL,
-	"color" varchar(6) NOT NULL,
+	"color" varchar(7) NOT NULL,
 	"criteria" json NOT NULL,
 	CONSTRAINT "tracks_name_unique" UNIQUE("name")
 );
@@ -171,6 +171,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"team_id" varchar(21),
 	"group" integer NOT NULL,
 	"registration_complete" boolean DEFAULT false NOT NULL,
+	"accepted_mlh_conduct" boolean DEFAULT true NOT NULL,
 	"profile_searchable" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"check_in_time" timestamp,

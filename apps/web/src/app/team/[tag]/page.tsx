@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
 					<Image
 						className="object-cover object-center"
 						fill
-						src={team.photo}
+						src={team.photo || ""}
 						alt={`Team Photo for ${team.name}`}
 					/>
 				</div>
@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
 						<Link href={`/@${member.hackerTag}`}>
 							<div className="flex h-[60px] px-2 items-center rounded-xl cursor-pointer hover:dark:bg-white/[0.08] backdrop-blur">
 								<Image
-									src={member.profileData.profilePhoto}
+									src={member.profileData.profilePhoto || ""}
 									alt={`${member.hackerTag}'s Profile Photo`}
 									height={40}
 									width={40}

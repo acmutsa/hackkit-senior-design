@@ -30,7 +30,7 @@ export default async function ({ params }: { params: { tag: string } }) {
 						<div className="w-full aspect-square rounded-full overflow-hidden relative">
 							<Image
 								fill
-								src={user.profileData.profilePhoto}
+								src={user.profileData.profilePhoto || ""}
 								alt={`@${user.hackerTag}'s Profile Photo`}
 							/>
 						</div>
