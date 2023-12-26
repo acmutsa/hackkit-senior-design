@@ -64,6 +64,12 @@ export default {
 			foreground: "#ffffff",
 			checked: false,
 		},
+        Judge: {
+            title: "Judge",
+            color: "#ADD8E6",
+            foreground: "#ffffff",
+            checked: false,
+        },
 		Volunteer: {
 			title: "Volunteer",
 			color: "#4CAF50",
