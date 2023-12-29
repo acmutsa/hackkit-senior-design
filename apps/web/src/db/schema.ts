@@ -153,7 +153,7 @@ export const profileData = pgTable("profile_data",
 	pronouns:     varchar ("pronouns",      {length:  20}) .notNull(),
 	bio:          text    ("bio"                         ) ,
 	skills:       json    ("skills"                      ) .notNull(),
-	profilePhoto: varchar ("profile_photo", {length: 255}) ,
+	profilePhoto: varchar ("profile_photo", {length: 255}) .notNull(),
 });
 
 export const events = pgTable("events",
