@@ -187,7 +187,8 @@ export const teams = pgTable("teams",
 	name:      varchar   ("name",      {length: 255}) .notNull(),
 	tag:       varchar   ("tag",       {length:  50}) .notNull().unique(),
 	bio:       text      ("bio"                     ) ,
-	photo:     varchar   ("photo",     {length: 400}) ,
+	photo:     varchar   ("photo",     {length: 400}) .notNull()
+                    .default("https://static.acmutsa.org/defaultteamphoto.png"),
 	createdAt: timestamp ("created_at"              ) .notNull().defaultNow(),
 	ownerID:   varchar   ("owner_id",  {length:  32}) .notNull().references(() => (users.id)),
 });
