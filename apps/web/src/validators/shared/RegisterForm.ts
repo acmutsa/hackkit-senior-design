@@ -137,5 +137,5 @@ export const RegisterFormValidator = z.object({
 	pronouns: z.string().min(1).max(15),
 	bio: z.string().min(1).max(500, { message: "Bio must be less than 500 characters." }),
 	skills: z.string().min(1).max(100, { message: "Skills must be less than 100 characters." }),
-	profileIsSearchable: z.boolean(),
+	hasSearchableProfile: z.boolean(),
 });

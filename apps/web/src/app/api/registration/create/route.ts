@@ -95,7 +95,7 @@ export async function POST(req: Request) {
 			email: body.email,
 			group: totalUserCount[0].count % c.groups.length,
 			registrationComplete: true,
-			profileSearchable: body.profileIsSearchable,
+			hasSearchableProfile: body.hasSearchableProfile,
 		});
 
 		await tx.insert(registrationData).values({

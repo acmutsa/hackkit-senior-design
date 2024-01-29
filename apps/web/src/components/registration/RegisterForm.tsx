@@ -58,7 +58,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			email: defaultEmail,
 			hackathonsAttended: 0,
 			dietaryRestrictions: [],
-			profileIsSearchable: true,
+			hasSearchableProfile: true,
 			bio: "",
 			wantsToReceiveMLHEmails: false,
 			// The rest of these are default values to prevent the controller / uncontrolled input warning from React
@@ -888,7 +888,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						</div>
 						<FormField
 							control={form.control}
-							name="profileIsSearchable"
+							name="hasSearchableProfile"
 							render={({ field }) => (
 								<FormItem className="mx-auto flex max-w-[600px] flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 									<FormControl>
