@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 	// TODO: Might be removable? Not sure if this is needed. In every case, the sure should have a peice of metadata that says if they are registered or not.
 
 	const lookupByUserID = await db.query.users.findFirst({
-		where: eq(users.id, user.id),
+		where: eq(users.clerkID, user.id),
 	});
 
 	if (lookupByUserID) {
