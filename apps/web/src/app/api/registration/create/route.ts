@@ -124,7 +124,7 @@ export async function POST(req: Request) {
 
 		await tx.insert(profileData).values({
 			hackerTag: body.hackerTag.toLowerCase(),
-			discord: body.profileDiscordName,
+			discordUsername: body.discordUsername,
 			pronouns: body.pronouns,
 			bio: body.bio,
 			skills: [],

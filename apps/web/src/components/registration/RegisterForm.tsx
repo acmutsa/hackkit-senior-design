@@ -77,7 +77,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			levelOfStudy: "" as any,
 			linkedin: "",
 			personalWebsite: "",
-			profileDiscordName: "",
+			discordUsername: "",
 			pronouns: "",
 			race: "" as any,
 			shirtSize: "" as any,
@@ -821,7 +821,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 							/>
 							<FormField
 								control={form.control}
-								name="profileDiscordName"
+								name="discordUsername"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Discord Username</FormLabel>

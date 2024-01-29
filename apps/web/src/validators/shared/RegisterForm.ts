@@ -130,7 +130,7 @@ export const RegisterFormValidator = z.object({
 			message: "HackerTag must be alphanumeric and have no spaces",
 		})
 		.toLowerCase(),
-	profileDiscordName: z
+	discordUsername: z
 		.string()
 		.min(2, { message: "Please enter a valid Discord Username" })
 		.max(50, { message: "Please enter a valid Discord Username" }),
