@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "b0acd99d-a0af-488d-933a-b1aa1c49a855",
+  "id": "80d15c4a-84e3-44b7-bd46-376a5f8cd173",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "error_log": {
@@ -134,8 +134,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "submission_id": {
-          "name": "submission_id",
+        "team_id": {
+          "name": "team_id",
           "type": "varchar(21)",
           "primaryKey": false,
           "notNull": true
@@ -168,12 +168,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "interviews_submission_id_submissions_team_id_fk": {
-          "name": "interviews_submission_id_submissions_team_id_fk",
+        "interviews_team_id_submissions_team_id_fk": {
+          "name": "interviews_team_id_submissions_team_id_fk",
           "tableFrom": "interviews",
           "tableTo": "submissions",
           "columnsFrom": [
-            "submission_id"
+            "team_id"
           ],
           "columnsTo": [
             "team_id"
@@ -183,11 +183,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "interviews_judge_id_submission_id": {
-          "name": "interviews_judge_id_submission_id",
+        "interviews_judge_id_team_id": {
+          "name": "interviews_judge_id_team_id",
           "columns": [
             "judge_id",
-            "submission_id"
+            "team_id"
           ]
         }
       },
@@ -680,8 +680,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "submission_id": {
-          "name": "submission_id",
+        "team_id": {
+          "name": "team_id",
           "type": "varchar(21)",
           "primaryKey": false,
           "notNull": true
@@ -702,12 +702,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "track_submissions_submission_id_submissions_team_id_fk": {
-          "name": "track_submissions_submission_id_submissions_team_id_fk",
+        "track_submissions_team_id_submissions_team_id_fk": {
+          "name": "track_submissions_team_id_submissions_team_id_fk",
           "tableFrom": "track_submissions",
           "tableTo": "submissions",
           "columnsFrom": [
-            "submission_id"
+            "team_id"
           ],
           "columnsTo": [
             "team_id"
@@ -717,11 +717,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "track_submissions_track_id_submission_id": {
-          "name": "track_submissions_track_id_submission_id",
+        "track_submissions_track_id_team_id": {
+          "name": "track_submissions_track_id_team_id",
           "columns": [
             "track_id",
-            "submission_id"
+            "team_id"
           ]
         }
       },

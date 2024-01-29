@@ -74,10 +74,10 @@ CREATE TABLE IF NOT EXISTS "events" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "interviews" (
 	"judge_id" varchar(32) NOT NULL,
-	"submission_id" varchar(21) NOT NULL,
+	"team_id" varchar(21) NOT NULL,
 	"table" integer NOT NULL,
 	"grade" json,
-	CONSTRAINT interviews_judge_id_submission_id PRIMARY KEY("judge_id","submission_id")
+	CONSTRAINT interviews_judge_id_team_id PRIMARY KEY("judge_id","team_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "invites" (
@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS "teams" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "track_submissions" (
 	"track_id" integer NOT NULL,
-	"submission_id" varchar(21) NOT NULL,
-	CONSTRAINT track_submissions_track_id_submission_id PRIMARY KEY("track_id","submission_id")
+	"team_id" varchar(21) NOT NULL,
+	CONSTRAINT track_submissions_track_id_team_id PRIMARY KEY("track_id","team_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tracks" (
@@ -192,7 +192,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "interviews" ADD CONSTRAINT "interviews_submission_id_submissions_team_id_fk" FOREIGN KEY ("submission_id") REFERENCES "submissions"("team_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "interviews" ADD CONSTRAINT "interviews_team_id_submissions_team_id_fk" FOREIGN KEY ("team_id") REFERENCES "submissions"("team_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -252,7 +252,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "track_submissions" ADD CONSTRAINT "track_submissions_submission_id_submissions_team_id_fk" FOREIGN KEY ("submission_id") REFERENCES "submissions"("team_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "track_submissions" ADD CONSTRAINT "track_submissions_team_id_submissions_team_id_fk" FOREIGN KEY ("team_id") REFERENCES "submissions"("team_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
