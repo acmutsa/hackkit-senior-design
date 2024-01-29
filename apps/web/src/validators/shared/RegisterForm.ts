@@ -56,7 +56,7 @@ export const RegisterFormValidator = z.object({
 	acceptsMLHCodeOfConduct: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Code of Conduct.",
 	}),
-	shareDataWithMLH: z.boolean().refine((val) => val === true, {
+	sharedDataWithMLH: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Terms & Conditions and Privacy Policy.",
 	}),
 	wantsToReceiveMLHEmails: z.boolean(),

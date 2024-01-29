@@ -79,7 +79,7 @@ export async function POST(req: Request) {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
-	if (!body.acceptsMLHCodeOfConduct || !body.shareDataWithMLH) {
+	if (!body.acceptsMLHCodeOfConduct || !body.sharedDataWithMLH) {
 		return NextResponse.json({
 			success: false,
 			message: "You must accept the MLH Code of Conduct and Privacy Policy.",
@@ -111,7 +111,7 @@ export async function POST(req: Request) {
 			softwareExperience: body.softwareBuildingExperience,
 			hackathonsAttended: body.hackathonsAttended,
 			shirtSize: body.shirtSize,
-			dataShareable: body.shareDataWithMLH,
+			sharedDataWithMLH: body.sharedDataWithMLH,
 			emailable: body.wantsToReceiveMLHEmails,
 			GitHub: body.github,
 			LinkedIn: body.linkedin,
