@@ -5,7 +5,6 @@ ALTER TYPE "role" ADD VALUE 'mentor';--> statement-breakpoint
 ALTER TYPE "role" ADD VALUE 'mlh';--> statement-breakpoint
 ALTER TYPE "role" ADD VALUE 'admin';--> statement-breakpoint
 ALTER TYPE "role" ADD VALUE 'super_admin';--> statement-breakpoint
-ALTER TYPE "level_of_study" ADD VALUE 'Other';--> statement-breakpoint
 ALTER TABLE "error_log" DROP CONSTRAINT "error_log_user_id_users_id_fk";
 --> statement-breakpoint
 ALTER TABLE "interviews" DROP CONSTRAINT "interviews_judge_id_users_id_fk";
@@ -28,9 +27,7 @@ ALTER TABLE "users" RENAME COLUMN "check_in_time" TO "checkin_timestamp";--> sta
 ALTER TABLE "profile_data" ALTER COLUMN "profile_photo" SET NOT NULL;--> statement-breakpoint
 ALTER TABLE "teams" ALTER COLUMN "photo" SET DEFAULT 'https://static.acmutsa.org/defaultteamphoto.png';--> statement-breakpoint
 ALTER TABLE "teams" ALTER COLUMN "photo" SET NOT NULL;--> statement-breakpoint
-ALTER TABLE "tracks" ALTER COLUMN "color" SET DATA TYPE varchar(7);--> statement-breakpoint
 ALTER TABLE "users" ALTER COLUMN "role" SET DEFAULT 'hacker';--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "accepted_mlh_conduct" boolean DEFAULT true NOT NULL;--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "error_log" ADD CONSTRAINT "error_log_user_id_users_clerk_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
