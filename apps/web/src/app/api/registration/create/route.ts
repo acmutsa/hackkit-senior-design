@@ -88,7 +88,7 @@ export async function POST(req: Request) {
 
 	await db.transaction(async (tx) => {
 		await tx.insert(users).values({
-			id: user.id,
+			clerkID: user.id,
 			firstName: body.firstName,
 			lastName: body.lastName,
 			hackerTag: body.hackerTag.toLowerCase(),
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
 		});
 
 		await tx.insert(registrationData).values({
-			userID: user.id,
+			clerkID: user.id,
 			age: body.age,
 			gender: body.gender,
 			race: body.race,
