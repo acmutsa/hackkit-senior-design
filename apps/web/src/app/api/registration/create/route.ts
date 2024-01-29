@@ -112,7 +112,7 @@ export async function POST(req: Request) {
 			hackathonsAttended: body.hackathonsAttended,
 			shirtSize: body.shirtSize,
 			sharedDataWithMLH: body.sharedDataWithMLH,
-			emailable: body.wantsToReceiveMLHEmails,
+			wantsToReceiveMLHEmails: body.wantsToReceiveMLHEmails,
 			GitHub: body.github,
 			LinkedIn: body.linkedin,
 			PersonalWebsite: body.personalWebsite,
