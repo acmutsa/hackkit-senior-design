@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!reqUserRecord || (reqUserRecord.role !== "Admin" && reqUserRecord.role !== "Super Admin")) {
+	if (!reqUserRecord || (reqUserRecord.role !== "admin" && reqUserRecord.role !== "super_admin")) {
 		return new Response("Unauthorized", { status: 401 });
 	}
 
