@@ -224,22 +224,22 @@ export const tracks = pgTable("tracks",
 export const trackSubmissions = pgTable("track_submissions",
     {
         trackID:      integer ("track_id"                   ) .notNull().references(() => tracks.id),
-        submissionID: varchar ("submission_id", {length: 21}) .notNull().references(() => submissions.teamID)
+        teamID: varchar ("team_id", {length: 21}) .notNull().references(() => submissions.teamID)
     },
     (table) => ({
-        id: primaryKey(table.trackID, table.submissionID),
+        id: primaryKey(table.trackID, table.teamID),
     })
 );
 
 export const interviews = pgTable("interviews",
     {
-    	judgeID:      varchar ("judge_id",      {length: 32}) .notNull().references(() => users.clerkID),
-        submissionID: varchar ("submission_id", {length: 21}) .notNull().references(() => submissions.teamID),
-        table:        integer ("table"                      ) .notNull(),
-        grade:        json    ("grade"                      ) ,
+    	judgeID: varchar ("judge_id",      {length: 32}) .notNull().references(() => users.clerkID),
+        teamID:  varchar ("team_id", {length: 21}) .notNull().references(() => submissions.teamID),
+        table:   integer ("table"                      ) .notNull(),
+        grade:   json    ("grade"                      ) ,
     },
     (table) => ({
-        id: primaryKey(table.judgeID, table.submissionID),
+        id: primaryKey(table.judgeID, table.teamID),
     })
 );
 
@@ -297,7 +297,7 @@ export const submissionRelations = relations(submissions, ({ one, many }) => ({
     tracks: many(trackSubmissions),
     interviews: one(interviews, {
         fields: [submissions.teamID],
-        references: [interviews.submissionID]
+        references: [interviews.teamID]
     }),
 }));
 
@@ -311,7 +311,7 @@ export const trackSubmissionsRelations = relations(trackSubmissions, ({ one }) =
         references: [tracks.id]
     }),
     submission: one(submissions, {
-		fields: [trackSubmissions.submissionID],
+		fields: [trackSubmissions.teamID],
 		references: [submissions.teamID]
     })
 }));
