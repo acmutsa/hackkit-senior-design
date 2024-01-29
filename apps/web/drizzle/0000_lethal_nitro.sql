@@ -35,7 +35,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "role" AS ENUM('Hacker', 'Judge', 'Volunteer', 'Mentor', 'MLH', 'Admin', 'Super Admin');
+ CREATE TYPE "role" AS ENUM('hacker', 'judge', 'volunteer', 'mentor', 'mlh', 'admin', 'super_admin');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -90,15 +90,15 @@ CREATE TABLE IF NOT EXISTS "invites" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "profile_data" (
 	"hacker_tag" varchar(15) PRIMARY KEY NOT NULL,
-	"discord" varchar(60),
+	"discord_username" varchar(60),
 	"pronouns" varchar(20) NOT NULL,
 	"bio" text,
 	"skills" json NOT NULL,
-	"profile_photo" varchar(255)
+	"profile_photo" varchar(255) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "registration_data" (
-	"user_id" varchar(32) PRIMARY KEY NOT NULL,
+	"clerk_id" varchar(32) PRIMARY KEY NOT NULL,
 	"age" integer NOT NULL,
 	"gender" "gender" NOT NULL,
 	"race" "race" NOT NULL,
@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS "registration_data" (
 	"software_experience" "software_experience" NOT NULL,
 	"hackathons_attended" integer NOT NULL,
 	"shirt_size" "shirt_size" NOT NULL,
-	"data_shareable" boolean NOT NULL,
-	"emailable" boolean NOT NULL,
+	"shared_data_with_mlh" boolean NOT NULL,
+	"wants_to_receive_mlh_emails" boolean NOT NULL,
 	"github" varchar(100),
 	"linkedin" varchar(100),
 	"personal_website" varchar(100),
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS "teams" (
 	"name" varchar(255) NOT NULL,
 	"tag" varchar(50) NOT NULL,
 	"bio" text,
-	"photo" varchar(400),
+	"photo" varchar(400) DEFAULT 'https://static.acmutsa.org/defaultteamphoto.png' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"owner_id" varchar(32) NOT NULL,
 	CONSTRAINT "teams_tag_unique" UNIQUE("tag")
@@ -162,31 +162,31 @@ CREATE TABLE IF NOT EXISTS "tracks" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" varchar(32) PRIMARY KEY NOT NULL,
+	"clerk_id" varchar(32) PRIMARY KEY NOT NULL,
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
-	"role" "role" DEFAULT 'Hacker' NOT NULL,
+	"role" "role" DEFAULT 'hacker' NOT NULL,
 	"hacker_tag" varchar(15) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"team_id" varchar(21),
 	"group" integer NOT NULL,
 	"registration_complete" boolean DEFAULT false NOT NULL,
 	"accepted_mlh_conduct" boolean DEFAULT true NOT NULL,
-	"profile_searchable" boolean DEFAULT true NOT NULL,
+	"has_searchable_profile" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"check_in_time" timestamp,
+	"checkin_timestamp" timestamp,
 	CONSTRAINT "users_hacker_tag_unique" UNIQUE("hacker_tag"),
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "error_log" ADD CONSTRAINT "error_log_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "error_log" ADD CONSTRAINT "error_log_user_id_users_clerk_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "interviews" ADD CONSTRAINT "interviews_judge_id_users_id_fk" FOREIGN KEY ("judge_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "interviews" ADD CONSTRAINT "interviews_judge_id_users_clerk_id_fk" FOREIGN KEY ("judge_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -198,7 +198,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "invites" ADD CONSTRAINT "invites_invitee_id_users_id_fk" FOREIGN KEY ("invitee_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "invites" ADD CONSTRAINT "invites_invitee_id_users_clerk_id_fk" FOREIGN KEY ("invitee_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -216,13 +216,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "registration_data" ADD CONSTRAINT "registration_data_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "registration_data" ADD CONSTRAINT "registration_data_clerk_id_users_clerk_id_fk" FOREIGN KEY ("clerk_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "scans" ADD CONSTRAINT "scans_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "scans" ADD CONSTRAINT "scans_user_id_users_clerk_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -240,7 +240,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "teams" ADD CONSTRAINT "teams_owner_id_users_id_fk" FOREIGN KEY ("owner_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "teams" ADD CONSTRAINT "teams_owner_id_users_clerk_id_fk" FOREIGN KEY ("owner_id") REFERENCES "users"("clerk_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

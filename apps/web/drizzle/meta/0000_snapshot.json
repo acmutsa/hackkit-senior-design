@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "a4358b1d-b761-4eaf-b3d4-d8ac8f4ec234",
+  "id": "b0acd99d-a0af-488d-933a-b1aa1c49a855",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "error_log": {
@@ -42,15 +42,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "error_log_user_id_users_id_fk": {
-          "name": "error_log_user_id_users_id_fk",
+        "error_log_user_id_users_clerk_id_fk": {
+          "name": "error_log_user_id_users_clerk_id_fk",
           "tableFrom": "error_log",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -155,15 +155,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "interviews_judge_id_users_id_fk": {
-          "name": "interviews_judge_id_users_id_fk",
+        "interviews_judge_id_users_clerk_id_fk": {
+          "name": "interviews_judge_id_users_clerk_id_fk",
           "tableFrom": "interviews",
           "tableTo": "users",
           "columnsFrom": [
             "judge_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -226,15 +226,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "invites_invitee_id_users_id_fk": {
-          "name": "invites_invitee_id_users_id_fk",
+        "invites_invitee_id_users_clerk_id_fk": {
+          "name": "invites_invitee_id_users_clerk_id_fk",
           "tableFrom": "invites",
           "tableTo": "users",
           "columnsFrom": [
             "invitee_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -274,8 +274,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "discord": {
-          "name": "discord",
+        "discord_username": {
+          "name": "discord_username",
           "type": "varchar(60)",
           "primaryKey": false,
           "notNull": false
@@ -302,7 +302,7 @@
           "name": "profile_photo",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -328,8 +328,8 @@
       "name": "registration_data",
       "schema": "",
       "columns": {
-        "user_id": {
-          "name": "user_id",
+        "clerk_id": {
+          "name": "clerk_id",
           "type": "varchar(32)",
           "primaryKey": true,
           "notNull": true
@@ -400,14 +400,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "data_shareable": {
-          "name": "data_shareable",
+        "shared_data_with_mlh": {
+          "name": "shared_data_with_mlh",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },
-        "emailable": {
-          "name": "emailable",
+        "wants_to_receive_mlh_emails": {
+          "name": "wants_to_receive_mlh_emails",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
@@ -457,15 +457,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "registration_data_user_id_users_id_fk": {
-          "name": "registration_data_user_id_users_id_fk",
+        "registration_data_clerk_id_users_clerk_id_fk": {
+          "name": "registration_data_clerk_id_users_clerk_id_fk",
           "tableFrom": "registration_data",
           "tableTo": "users",
           "columnsFrom": [
-            "user_id"
+            "clerk_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -507,15 +507,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "scans_user_id_users_id_fk": {
-          "name": "scans_user_id_users_id_fk",
+        "scans_user_id_users_clerk_id_fk": {
+          "name": "scans_user_id_users_clerk_id_fk",
           "tableFrom": "scans",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -626,7 +626,8 @@
           "name": "photo",
           "type": "varchar(400)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'https://static.acmutsa.org/defaultteamphoto.png'"
         },
         "created_at": {
           "name": "created_at",
@@ -644,15 +645,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "teams_owner_id_users_id_fk": {
-          "name": "teams_owner_id_users_id_fk",
+        "teams_owner_id_users_clerk_id_fk": {
+          "name": "teams_owner_id_users_clerk_id_fk",
           "tableFrom": "teams",
           "tableTo": "users",
           "columnsFrom": [
             "owner_id"
           ],
           "columnsTo": [
-            "id"
+            "clerk_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -772,8 +773,8 @@
       "name": "users",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "clerk_id": {
+          "name": "clerk_id",
           "type": "varchar(32)",
           "primaryKey": true,
           "notNull": true
@@ -795,7 +796,7 @@
           "type": "role",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Hacker'"
+          "default": "'hacker'"
         },
         "hacker_tag": {
           "name": "hacker_tag",
@@ -835,8 +836,8 @@
           "notNull": true,
           "default": true
         },
-        "profile_searchable": {
-          "name": "profile_searchable",
+        "has_searchable_profile": {
+          "name": "has_searchable_profile",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -849,8 +850,8 @@
           "notNull": true,
           "default": "now()"
         },
-        "check_in_time": {
-          "name": "check_in_time",
+        "checkin_timestamp": {
+          "name": "checkin_timestamp",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -937,13 +938,13 @@
     "role": {
       "name": "role",
       "values": {
-        "Hacker": "Hacker",
-        "Judge": "Judge",
-        "Volunteer": "Volunteer",
-        "Mentor": "Mentor",
-        "MLH": "MLH",
-        "Admin": "Admin",
-        "Super Admin": "Super Admin"
+        "hacker": "hacker",
+        "judge": "judge",
+        "volunteer": "volunteer",
+        "mentor": "mentor",
+        "mlh": "mlh",
+        "admin": "admin",
+        "super_admin": "super_admin"
       }
     },
     "shirt_size": {
