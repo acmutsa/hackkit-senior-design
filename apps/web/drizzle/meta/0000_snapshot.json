@@ -744,7 +744,7 @@
         },
         "color": {
           "name": "color",
-          "type": "varchar(6)",
+          "type": "varchar(7)",
           "primaryKey": false,
           "notNull": true
         },
@@ -827,6 +827,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "accepted_mlh_conduct": {
+          "name": "accepted_mlh_conduct",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
         },
         "profile_searchable": {
           "name": "profile_searchable",
@@ -931,6 +938,7 @@
       "name": "role",
       "values": {
         "Hacker": "Hacker",
+        "Judge": "Judge",
         "Volunteer": "Volunteer",
         "Mentor": "Mentor",
         "MLH": "MLH",
@@ -957,7 +965,7 @@
         "Junior": "Junior",
         "Senior": "Senior",
         "Recent Grad": "Recent Grad",
-        "Other,": "Other,"
+        "Other": "Other"
       }
     }
   },
