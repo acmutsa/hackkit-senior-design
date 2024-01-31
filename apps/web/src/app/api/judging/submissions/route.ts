@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
 	}
 
     const id = req.nextUrl.searchParams.get('id') as string;
-    const submission = await db.select().from(submissions).where(eq(submissions.id, id)).limit(1);
+    const submission = await db.select().from(submissions).where(eq(submissions.teamID, id)).limit(1);
 
     return NextResponse.json(submission);
 }

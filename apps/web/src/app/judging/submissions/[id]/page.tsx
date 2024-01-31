@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 
 export default async function Page({params: {id}}: {params: {id: string}}) {
 
-    const submission = await db.select().from(submissions).where(eq(submissions.id, id)).limit(1);
+    const submission = await db.select().from(submissions).where(eq(submissions.teamID, id)).limit(1);
     const team = await db.select({name: teams.tag}).from(teams).where(eq(teams.id, submission[0].teamID)).limit(1);
     
     const project = {
