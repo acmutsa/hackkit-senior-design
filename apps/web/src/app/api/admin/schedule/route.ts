@@ -1,7 +1,12 @@
 import { auth } from "@clerk/nextjs";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { users, submissions, interviews, tracks, trackSubmissions } from "@/db/schema";
+import { users            as usersTable,
+         submissions      as submissionsTable,
+         interviews       as interviewsTable,
+         tracks           as tracksTable,
+         trackSubmissions as trackSubmissionsTable
+       } from "@/db/schema";
 import c from "@/hackkit.config";
 import { NextResponse } from "next/server";
 
@@ -10,8 +15,8 @@ export async function POST(req: Request) {
 
 	// if (!userId) return new Response("Unauthorized", { status: 401 });
 
-	// const reqUserRecord = await db.query.users.findFirst({
-	// 	where: eq(users.clerkID, userId),
+	// const reqUserRecord = await db.query.usersTable.findFirst({
+	// 	where: eq(usersTable.clerkID, userId),
 	// });
 
 	// if (!reqUserRecord || (reqUserRecord.role !== "super_admin" && reqUserRecord.role !== "admin")) {
@@ -19,32 +24,31 @@ export async function POST(req: Request) {
 	// }
 
     // clear any previously generated schedules
-    await db.delete(interviews);
+    await db.delete(interviewsTable);
 
     // Fetch all submissions, track data, and judges
-    const allSubmissions = (await db.select({id: submissions.id}).from(submissions).orderBy(submissions.id))
+    const submissions = (await db.select({id: submissionsTable.teamID}).from(submissionsTable).orderBy(submissionsTable.teamID))
                                 .map((submission) => ({id: submission.id}));
 
-    const trackSizes = (await db.select({id: tracks.id, name: tracks.name, size: sql`count(${trackSubmissions.trackID})`})
-                                .from(tracks).innerJoin(trackSubmissions, eq(tracks.id, trackSubmissions.trackID))
-                                .groupBy(tracks.id)
-                                .orderBy(sql`count(${trackSubmissions.trackID}) desc`));
+    const trackSizes = (await db.select({id: tracksTable.id, name: tracksTable.name, size: sql`count(${trackSubmissionsTable.trackID})`})
+                                .from(tracksTable).innerJoin(trackSubmissionsTable, eq(tracksTable.id, trackSubmissionsTable.trackID))
+                                .groupBy(tracksTable.id)
+                                .orderBy(sql`count(${trackSubmissionsTable.trackID}) desc`));
 
-    const allTrackSubmissions = (await db.select().from(trackSubmissions))
+    const trackSubmissions = (await db.select().from(trackSubmissionsTable))
                                     .map((trackSubmission) => ({
-                                        id: trackSubmission.id,
                                         trackID: trackSubmission.trackID,
-                                        submissionID: trackSubmission.submissionID
+                                        teamID: trackSubmission.teamID
                                     }));
 
-    const allJudges = (await db.select({id: users.clerkID}).from(users).where(eq(users.role, "judge")))
+    const judges = (await db.select({id: usersTable.clerkID}).from(usersTable).where(eq(usersTable.role, "judge")))
                            .map((user) => ({id: user.id}));
 
     // Declare interview array to store iteratively generated schedule data
     type Interview = {
         id:           number,
         judgeID:      string,
-        submissionID: string,
+        teamID: string,
         table:        number,
         complete:     boolean
     };
@@ -53,13 +57,13 @@ export async function POST(req: Request) {
 
     // Generate interviews in batches ordered by submission
     var curID = 0;
-    for (let submission of allSubmissions) {
+    for (let submission of submissions) {
         tempInterviews[submission.id] = [];
         for (let i = 0; i < c.interviewsPerSubmission; i++) {
             let newInterview = {
                 id: curID++,
                 judgeID: "",
-                submissionID: submission.id,
+                teamID: submission.id,
                 table: -1,
                 complete: false
             };
@@ -70,12 +74,12 @@ export async function POST(req: Request) {
     // Assign tables to largest tracks' submissions first
     var curTable = 1;
     for (let track of trackSizes) {
-        for (let trackSubmission of allTrackSubmissions) {
+        for (let trackSubmission of trackSubmissions) {
 
             if (trackSubmission.trackID != track.id) continue;
 
             let newTableAssigned = false;
-            for (let curInterview of tempInterviews[trackSubmission.submissionID]){
+            for (let curInterview of tempInterviews[trackSubmission.teamID]){
                 if (curInterview["table"] == -1)
                     curInterview["table"] = curTable;
                     newTableAssigned = true;
@@ -94,18 +98,18 @@ export async function POST(req: Request) {
     }
 
     const numInterviews = interviewsArray.length;
-    const numJudges = allJudges.length;
+    const numJudges = judges.length;
     const interviewsPerJudge = Math.ceil(numInterviews / numJudges);
 
     for (let judge = 0; judge < numJudges; judge++) {
         for (let interview = 0; interview < interviewsPerJudge; interview++) {
             const submission = judge * interviewsPerJudge + interview;
             if (submission < numInterviews)
-                interviewsArray[submission]["judgeID"] = allJudges[judge].id;
+                interviewsArray[submission]["judgeID"] = judges[judge].id;
         }
     }
 
-    await db.insert(interviews).values(interviewsArray);
+    await db.insert(interviewsTable).values(interviewsArray);
 
     return NextResponse.json({success: true});
 }
