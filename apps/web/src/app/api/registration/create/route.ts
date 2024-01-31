@@ -79,7 +79,7 @@ export async function POST(req: Request) {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
-	if (!body.acceptsMLHCodeOfConduct || !body.shareDataWithMLH) {
+	if (!body.acceptsMLHCodeOfConduct || !body.sharedDataWithMLH) {
 		return NextResponse.json({
 			success: false,
 			message: "You must accept the MLH Code of Conduct and Privacy Policy.",
@@ -91,45 +91,44 @@ export async function POST(req: Request) {
 			clerkID: user.id,
 			firstName: body.firstName,
 			lastName: body.lastName,
-			email: body.email,
 			hackerTag: body.hackerTag.toLowerCase(),
-			registrationComplete: true,
+			email: body.email,
 			group: totalUserCount[0].count % c.groups.length,
-			hasSearchableProfile: body.profileIsSearchable,
+			registrationComplete: true,
+			hasSearchableProfile: body.hasSearchableProfile,
 		});
 
 		await tx.insert(registrationData).values({
 			clerkID: user.id,
-			acceptedMLHCodeOfConduct: body.acceptsMLHCodeOfConduct,
-			accommodationNote: body.accommodationNote || null,
 			age: body.age,
-			dietRestrictions: body.dietaryRestrictions,
-			ethnicity: body.ethnicity,
 			gender: body.gender,
-			hackathonsAttended: body.hackathonsAttended,
-			heardFrom: body.heardAboutEvent || null,
-			levelOfStudy: body.levelOfStudy,
-			major: body.major,
 			race: body.race,
-			sharedDataWithMLH: body.shareDataWithMLH,
-			shirtSize: body.shirtSize,
+			ethnicity: body.ethnicity,
 			shortID: body.shortID,
-			softwareExperience: body.softwareBuildingExperience,
 			university: body.university,
+			major: body.major,
+			levelOfStudy: body.levelOfStudy,
+			softwareExperience: body.softwareBuildingExperience,
+			hackathonsAttended: body.hackathonsAttended,
+			shirtSize: body.shirtSize,
+			sharedDataWithMLH: body.sharedDataWithMLH,
 			wantsToReceiveMLHEmails: body.wantsToReceiveMLHEmails,
 			GitHub: body.github,
 			LinkedIn: body.linkedin,
 			PersonalWebsite: body.personalWebsite,
 			resume: body.resume,
+			dietRestrictions: body.dietaryRestrictions,
+			accommodationNote: body.accommodationNote || null,
+			heardFrom: body.heardAboutEvent || null,
 		});
 
 		await tx.insert(profileData).values({
-			bio: body.bio,
-			discordUsername: body.profileDiscordName,
 			hackerTag: body.hackerTag.toLowerCase(),
-			profilePhoto: user.profileImageUrl,
+			discordUsername: body.discordUsername,
 			pronouns: body.pronouns,
+			bio: body.bio,
 			skills: [],
+			profilePhoto: user.profileImageUrl,
 		});
 	});
 

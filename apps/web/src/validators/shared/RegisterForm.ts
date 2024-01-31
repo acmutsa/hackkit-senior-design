@@ -35,16 +35,16 @@ export const RegisterFormValidator = z.object({
 				.int({ message: "Value must be an integer" })
 		),
 	gender: z.union([
-		z.literal("MALE", defaultPrettyError),
-		z.literal("FEMALE", defaultPrettyError),
-		z.literal("NON-BINARY", defaultPrettyError),
-		z.literal("OTHER", defaultPrettyError),
-		z.literal("PREFERNOTSAY", defaultPrettyError),
+		z.literal("Male", defaultPrettyError),
+		z.literal("Female", defaultPrettyError),
+		z.literal("Non-binary", defaultPrettyError),
+		z.literal("Other", defaultPrettyError),
+		z.literal("Prefer not to say", defaultPrettyError),
 	]),
 	race: z.union([
 		z.literal("Native American", defaultPrettyError),
 		z.literal("Asian / Pacific Islander", defaultPrettyError),
-		z.literal("Black or African American", defaultPrettyError),
+		z.literal("Black / African American", defaultPrettyError),
 		z.literal("White / Caucasian", defaultPrettyError),
 		z.literal("Multiple / Other", defaultPrettyError),
 		z.literal("Prefer not to say", defaultPrettyError),
@@ -56,7 +56,7 @@ export const RegisterFormValidator = z.object({
 	acceptsMLHCodeOfConduct: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Code of Conduct.",
 	}),
-	shareDataWithMLH: z.boolean().refine((val) => val === true, {
+	sharedDataWithMLH: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Terms & Conditions and Privacy Policy.",
 	}),
 	wantsToReceiveMLHEmails: z.boolean(),
@@ -75,7 +75,7 @@ export const RegisterFormValidator = z.object({
 		z.literal("Junior", defaultPrettyError),
 		z.literal("Senior", defaultPrettyError),
 		z.literal("Recent Grad", defaultPrettyError),
-		z.literal("Other", defaultPrettyError)
+		z.literal("Other", defaultPrettyError),
 	]),
 	hackathonsAttended: z
 		.number()
@@ -130,12 +130,12 @@ export const RegisterFormValidator = z.object({
 			message: "HackerTag must be alphanumeric and have no spaces",
 		})
 		.toLowerCase(),
-	profileDiscordName: z
+	discordUsername: z
 		.string()
 		.min(2, { message: "Please enter a valid Discord Username" })
 		.max(50, { message: "Please enter a valid Discord Username" }),
 	pronouns: z.string().min(1).max(15),
 	bio: z.string().min(1).max(500, { message: "Bio must be less than 500 characters." }),
 	skills: z.string().min(1).max(100, { message: "Skills must be less than 100 characters." }),
-	profileIsSearchable: z.boolean(),
+	hasSearchableProfile: z.boolean(),
 });

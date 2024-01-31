@@ -38,7 +38,7 @@ export async function GET() {
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!reqUserRecord || (reqUserRecord.role !== "super_admin" && reqUserRecord.role !== "admin")) {
+	if (!reqUserRecord || (reqUserRecord.role !== "admin" && reqUserRecord.role !== "super_admin")) {
 		return new Response("Unauthorized", { status: 401 });
 	}
 

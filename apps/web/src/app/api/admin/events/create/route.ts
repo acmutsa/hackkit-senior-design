@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!reqUserRecord || (reqUserRecord.role !== "super_admin" && reqUserRecord.role !== "admin")) {
+	if (!reqUserRecord || (reqUserRecord.role !== "admin" && reqUserRecord.role !== "super_admin")) {
 		return new Response("Unauthorized", { status: 401 });
 	}
 
@@ -34,9 +34,10 @@ export async function POST(req: Request) {
 		.insert(events)
 		.values({
 			title: parsedBody.data.title,
-			description: parsedBody.data.description,
 			startTime: parsedBody.data.startTime,
 			endTime: parsedBody.data.endTime,
+            roomNum: parsedBody.data.roomNum,
+			description: parsedBody.data.description,
 			type: parsedBody.data.type,
 			host:
 				parsedBody.data.host && parsedBody.data.host.length > 0
