@@ -58,43 +58,43 @@ export default {
 	startDate: new Date(2023, 6, 15).setHours(9),
 	prettyLocation: "San Pedro I, UTSA",
 	roleBadges: {
-		Hacker: {
+		hacker: {
 			title: "Hacker",
 			color: "hsl(var(--hackathon-primary))",
 			foreground: "#ffffff",
 			checked: false,
 		},
-        Judge: {
+        judge: {
             title: "Judge",
             color: "#ADD8E6",
             foreground: "#ffffff",
             checked: false,
         },
-		Volunteer: {
+		volunteer: {
 			title: "Volunteer",
 			color: "#4CAF50",
 			foreground: "#ffffff",
 			checked: false,
 		},
-		Mentor: {
+		mentor: {
 			title: "Mentor",
 			color: "#9C27B0",
 			foreground: "#ffffff",
 			checked: false,
 		},
-		MLH: {
+		mlh: {
 			title: "MLH",
 			color: "#ffffff",
 			foreground: "#E73426",
 			checked: "#E73426",
 		},
-		Admin: {
+		admin: {
 			title: "Organizer",
 			color: "#f59e0b",
 			foreground: "#ffffff",
 			checked: true,
 		},
-		"Super Admin": {
+		super_admin: {
 			title: "Organizer",
 			color: "#f59e0b",
 			foreground: "#ffffff",

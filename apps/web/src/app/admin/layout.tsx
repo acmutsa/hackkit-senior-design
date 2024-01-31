@@ -24,10 +24,10 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 	}
 
 	const user = await db.query.users.findFirst({
-		where: eq(users.id, userId),
+		where: eq(users.clerkID, userId),
 	});
 
-	if (!user || (user.role !== "Admin" && user.role !== "Super Admin")) {
+	if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
 		return (
 			<FullScreenMessage
 				title="Access Denied"

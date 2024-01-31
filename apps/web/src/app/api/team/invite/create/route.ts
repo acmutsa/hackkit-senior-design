@@ -12,7 +12,7 @@ export async function POST(req: Request): serverZodResponse<typeof BasicServerVa
 	const { userId } = await auth();
 	if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 	const user = await db.query.users.findFirst({
-		where: eq(users.id, userId),
+		where: eq(users.clerkID, userId),
 		with: { team: true },
 	});
 	if (!user) return NextResponse.json("Unauthorized", { status: 401 });
@@ -73,7 +73,7 @@ export async function POST(req: Request): serverZodResponse<typeof BasicServerVa
 	}
 
 	await db.insert(invites).values({
-		inviteeID: invitee.id,
+		inviteeID: invitee.clerkID,
 		teamID: user.teamID,
 	});
 

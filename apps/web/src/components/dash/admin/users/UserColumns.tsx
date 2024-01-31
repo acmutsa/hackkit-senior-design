@@ -20,7 +20,7 @@ const userValidator = createSelectSchema(users).merge(
 
 export type userValidatorType = Pick<
 	z.infer<typeof userValidator>,
-	"id" | "createdAt" | "firstName" | "lastName" | "profileData" | "email" | "role"
+	"clerkID" | "createdAt" | "firstName" | "lastName" | "profileData" | "email" | "role"
 >;
 
 export const columns: ColumnDef<userValidatorType>[] = [
@@ -61,7 +61,7 @@ export const columns: ColumnDef<userValidatorType>[] = [
 		accessorKey: "id2",
 		header: "View",
 		cell: ({ row }) => (
-			<Link href={`/admin/users/${row.original.id}`}>
+			<Link href={`/admin/users/${row.original.clerkID}`}>
 				<Button>View</Button>
 			</Link>
 		),

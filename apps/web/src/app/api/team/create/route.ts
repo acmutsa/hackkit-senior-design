@@ -11,7 +11,7 @@ import { logError } from "@/lib/utils/server/logError";
 export async function POST(req: Request) {
 	const { userId } = await auth();
 	if (!userId) return new Response("Unauthorized", { status: 401 });
-	const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
+	const user = await db.query.users.findFirst({ where: eq(users.clerkID, userId) });
 	if (!user) return new Response("Unauthorized", { status: 401 });
 	if (user.teamID) {
 		return NextResponse.json({
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 				.set({
 					teamID,
 				})
-				.where(eq(users.id, userId));
+				.where(eq(users.clerkID, userId));
 		});
 
 		return NextResponse.json({

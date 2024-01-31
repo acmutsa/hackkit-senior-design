@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 	}
 
 	const user = await db.query.users.findFirst({
-		where: eq(users.id, userId),
+		where: eq(users.clerkID, userId),
 		with: {
 			invites: {
 				where: eq(invites.teamID, body.data.teamInviteID),

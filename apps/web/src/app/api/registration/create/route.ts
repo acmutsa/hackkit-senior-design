@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 	// TODO: Might be removable? Not sure if this is needed. In every case, the sure should have a peice of metadata that says if they are registered or not.
 
 	const lookupByUserID = await db.query.users.findFirst({
-		where: eq(users.id, user.id),
+		where: eq(users.clerkID, user.id),
 	});
 
 	if (lookupByUserID) {
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
 		.select({ count: sql<number>`count(*)`.mapWith(Number) })
 		.from(users);
 
-	if (!body.acceptsMLHCodeOfConduct || !body.shareDataWithMLH) {
+	if (!body.acceptsMLHCodeOfConduct || !body.sharedDataWithMLH) {
 		return NextResponse.json({
 			success: false,
 			message: "You must accept the MLH Code of Conduct and Privacy Policy.",
@@ -88,18 +88,18 @@ export async function POST(req: Request) {
 
 	await db.transaction(async (tx) => {
 		await tx.insert(users).values({
-			id: user.id,
+			clerkID: user.id,
 			firstName: body.firstName,
 			lastName: body.lastName,
 			hackerTag: body.hackerTag.toLowerCase(),
 			email: body.email,
 			group: totalUserCount[0].count % c.groups.length,
 			registrationComplete: true,
-			profileSearchable: body.profileIsSearchable,
+			hasSearchableProfile: body.hasSearchableProfile,
 		});
 
 		await tx.insert(registrationData).values({
-			userID: user.id,
+			clerkID: user.id,
 			age: body.age,
 			gender: body.gender,
 			race: body.race,
@@ -111,8 +111,8 @@ export async function POST(req: Request) {
 			softwareExperience: body.softwareBuildingExperience,
 			hackathonsAttended: body.hackathonsAttended,
 			shirtSize: body.shirtSize,
-			dataShareable: body.shareDataWithMLH,
-			emailable: body.wantsToReceiveMLHEmails,
+			sharedDataWithMLH: body.sharedDataWithMLH,
+			wantsToReceiveMLHEmails: body.wantsToReceiveMLHEmails,
 			GitHub: body.github,
 			LinkedIn: body.linkedin,
 			PersonalWebsite: body.personalWebsite,
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
 
 		await tx.insert(profileData).values({
 			hackerTag: body.hackerTag.toLowerCase(),
-			discord: body.profileDiscordName,
+			discordUsername: body.discordUsername,
 			pronouns: body.pronouns,
 			bio: body.bio,
 			skills: [],

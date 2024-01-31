@@ -56,7 +56,7 @@ export const RegisterFormValidator = z.object({
 	acceptsMLHCodeOfConduct: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Code of Conduct.",
 	}),
-	shareDataWithMLH: z.boolean().refine((val) => val === true, {
+	sharedDataWithMLH: z.boolean().refine((val) => val === true, {
 		message: "You must accept the MLH Terms & Conditions and Privacy Policy.",
 	}),
 	wantsToReceiveMLHEmails: z.boolean(),
@@ -130,12 +130,12 @@ export const RegisterFormValidator = z.object({
 			message: "HackerTag must be alphanumeric and have no spaces",
 		})
 		.toLowerCase(),
-	profileDiscordName: z
+	discordUsername: z
 		.string()
 		.min(2, { message: "Please enter a valid Discord Username" })
 		.max(50, { message: "Please enter a valid Discord Username" }),
 	pronouns: z.string().min(1).max(15),
 	bio: z.string().min(1).max(500, { message: "Bio must be less than 500 characters." }),
 	skills: z.string().min(1).max(100, { message: "Skills must be less than 100 characters." }),
-	profileIsSearchable: z.boolean(),
+	hasSearchableProfile: z.boolean(),
 });

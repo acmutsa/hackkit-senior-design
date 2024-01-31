@@ -58,12 +58,12 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			email: defaultEmail,
 			hackathonsAttended: 0,
 			dietaryRestrictions: [],
-			profileIsSearchable: true,
+			hasSearchableProfile: true,
 			bio: "",
 			wantsToReceiveMLHEmails: false,
 			// The rest of these are default values to prevent the controller / uncontrolled input warning from React
 			acceptsMLHCodeOfConduct: false,
-			shareDataWithMLH: false,
+			sharedDataWithMLH: false,
 			accommodationNote: "",
 			firstName: "",
 			lastName: "",
@@ -77,7 +77,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			levelOfStudy: "" as any,
 			linkedin: "",
 			personalWebsite: "",
-			profileDiscordName: "",
+			discordUsername: "",
 			pronouns: "",
 			race: "" as any,
 			shirtSize: "" as any,
@@ -105,7 +105,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			);
 		}
 
-		if (data.acceptsMLHCodeOfConduct !== true || data.shareDataWithMLH !== true) {
+		if (data.acceptsMLHCodeOfConduct !== true || data.sharedDataWithMLH !== true) {
 			return alert("You must accept the MLH Code of Conduct and Privacy Policy to continue.");
 		}
 
@@ -338,7 +338,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						/>
 						<FormField
 							control={form.control}
-							name="shareDataWithMLH"
+							name="sharedDataWithMLH"
 							render={({ field }) => (
 								<FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 									<FormControl>
@@ -821,7 +821,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 							/>
 							<FormField
 								control={form.control}
-								name="profileDiscordName"
+								name="discordUsername"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Discord Username</FormLabel>
@@ -888,7 +888,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						</div>
 						<FormField
 							control={form.control}
-							name="profileIsSearchable"
+							name="hasSearchableProfile"
 							render={({ field }) => (
 								<FormItem className="mx-auto flex max-w-[600px] flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 									<FormControl>

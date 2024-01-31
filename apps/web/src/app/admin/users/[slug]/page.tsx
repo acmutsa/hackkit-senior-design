@@ -8,7 +8,7 @@ import c from "@/hackkit.config";
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	const user = await db.query.users.findFirst({
-		where: eq(users.id, params.slug),
+		where: eq(users.clerkID, params.slug),
 		with: {
 			profileData: true,
 			registrationData: true,
@@ -38,7 +38,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 					</div>
 					<div className="text-sm pl-2">
 						<p>
-							<span className="font-bold">Account ID:</span> {user.id}
+							<span className="font-bold">Account ID:</span> {user.clerkID}
 						</p>
 						<p>
 							<span className="font-bold">{c.localUniversityShortIDName}:</span>{" "}
